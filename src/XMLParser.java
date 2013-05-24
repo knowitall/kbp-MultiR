@@ -35,6 +35,38 @@ public class XMLParser {
         }
     }
 
+    public Query getQueryForEntity(String entity) {
+        NodeList nodes = xmlDoc.getElementsByTagName("query");
+        for (int i = 0; i < nodes.getLength(); i++) {
+            Node n = nodes.item(i);
+
+            if (n.getNodeType() == Node.ELEMENT_NODE) {
+                Element e = (Element) n;
+                if (e.getElementsByTagName("enttype").item(0).getTextContent().equals(entity)) {
+                    Query match = new Query(n);
+                    return match;
+                }
+            }
+        }
+        return null;
+    }
+
+    public Query getQueryForQueryId(String queryId) {
+        NodeList nodes = xmlDoc.getElementsByTagName("query");
+        for (int i = 0; i < nodes.getLength(); i++) {
+            Node n = nodes.item(i);
+
+            if (n.getNodeType() == Node.ELEMENT_NODE) {
+                Element e = (Element) n;
+                if (e.getAttribute("id").equals(queryId)) {
+                    Query match = new Query(n);
+                    return match;
+                }
+            }
+        }
+        return null;
+    }
+
     public List<Query> getQueries() {
         List<Query> queries = new ArrayList<Query>();
         NodeList nodes = xmlDoc.getElementsByTagName("query");

@@ -21,7 +21,16 @@ public class Query {
         if (e.getElementsByTagName("ignore").item(0) != null) {
             ignore = e.getElementsByTagName("ignore").item(0).getTextContent().split(" ");
         }
+    }
 
+    public boolean equals(Object o) {
+        if (o.getClass() == Query.class) {
+            Query other = (Query) o;
+            if (other.queryId.equals(queryId)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public String toString() {

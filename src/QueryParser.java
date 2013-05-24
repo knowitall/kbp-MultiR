@@ -22,6 +22,7 @@ public class QueryParser {
     public static final String sentence_out = "/mnt/WebWare6/bdwalker/kbp/query_sentences/";
     public static final String position_out_file = "/mnt/WebWare6/bdwalker/kbp/query_positions/";
     public static final String deps_out_file = "/mnt/WebWare6/bdwalker/kbp/query_dependencies/";
+    public static final String sentence_out_file = "/mnt/WebWare6/bdwalker/kbp/query_sentences/";
 
     public static void outputDataForQuery(Query q) throws FileNotFoundException {
         String entity = q.entity;
@@ -216,10 +217,15 @@ public class QueryParser {
         posIn.nextLine();
         Scanner positionIn = new Scanner(new File(position_out_file + filename));
         positionIn.nextLine();
+        Scanner sentenceIn = new Scanner(new File(sentence_out_file + filename));
+        sentenceIn.nextLine();
+
 
         while (tokenIn.hasNextLine()) {
             String[] tabTokens = tokenIn.nextLine().split("\\t");
             String[] tokens = tabTokens[1].split(" ");
+
+            String sentence = sentenceIn.nextLine().split("\\t")[1];
 
             int[] p = new int[tokens.length];
             String[] t = new String[tokens.length];
@@ -250,6 +256,7 @@ public class QueryParser {
                 wrapper.entityPos = positionArray;
                 wrapper.posTags = pos;
                 wrapper.tokens = tokens;
+                wrapper.sentence = sentence;
                 wrapper.sentenceId = Integer.parseInt(tabTokens[0]);
                 wrapper.entity2 = secondArguments.get(arg2Pos);
                 String[] entity2Position = arg2Pos.split(":");

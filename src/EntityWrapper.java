@@ -17,6 +17,7 @@ public class EntityWrapper {
     public int[] entity2Pos;
     public int[] dependencyParents;
     public String[] dependencyTypes;
+    public String sentence;
 
     public EntityWrapper(String e) {
         entity = e;
@@ -27,6 +28,7 @@ public class EntityWrapper {
         entityPos = new int[0];
         entity2Pos = new int[0];
         dependencyParents = new int[0];
+        sentence = "";
         dependencyTypes = new String[0];
     }
 
@@ -35,15 +37,16 @@ public class EntityWrapper {
     }
 
     public String toString() {
-        return "Entity: " + entity + "\n" +
-               "Sentence ID: " + sentenceId + "\n" +
-               "POS Tags: " + Arrays.toString(posTags) + "\n" +
-               "Tokens: " + Arrays.toString(tokens) + "\n" +
-               "Entity2: " + entity2 + "\n" +
-               "Dependency Types: " + Arrays.toString(dependencyTypes) + "\n" +
-               "Dependency Parents: " + Arrays.toString(dependencyParents) + "\n" +
-               "Entity Pos: " + Arrays.toString(entityPos) + "\n" +
-               "Entity2 Pos: " + Arrays.toString(entity2Pos) + "\n\n";
+        return "Entity             : " + entity + "\n" +
+               "Sentence ID        : " + sentenceId + "\n" +
+               "Sentence           :" + sentence + "\n" +
+               "POS Tags           : " +  Arrays.toString(posTags) + "\n" +
+               "Tokens             : " + Arrays.toString(tokens) + "\n" +
+               "Entity2            : " + entity2 + "\n" +
+               "Dependency Types   : " + Arrays.toString(dependencyTypes) + "\n" +
+               "Dependency Parents : " + Arrays.toString(dependencyParents) + "\n" +
+               "Entity Pos         : " + Arrays.toString(entityPos) + "\n" +
+               "Entity2 Pos        : " + Arrays.toString(entity2Pos) + "\n\n";
     }
 
 }

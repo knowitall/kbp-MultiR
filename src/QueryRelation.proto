@@ -3,8 +3,6 @@ message Relation {
     required string destGuid = 2;
     required string relType = 3;
     repeated Mention mention = 4;
-
-
 }
 
 message Mention {
@@ -12,5 +10,5 @@ message Mention {
     required int32 destId = 2;
     repeated string feature = 3;
     required string sentence = 4;
-
+    optional string filename = 5;
 }
