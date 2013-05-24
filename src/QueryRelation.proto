@@ -1,14 +1,14 @@
 message Relation {
-    required string sourceGuid = 1;
-    required string destGuid = 2;
-    required string relType = 3;
+    optional string sourceGuid = 1;
+    optional string destGuid = 2;
+    optional string relType = 3;
     repeated Mention mention = 4;
 }
 
 message Mention {
-    required int32 sourceId = 1;
-    required int32 destId = 2;
-    repeated string feature = 3;
-    required string sentence = 4;
-    optional string filename = 5;
+    optional int32 sourceId = 1;
+    optional int32 destId = 2;
+    optional string filename = 3;
+    repeated string feature = 4;
+    required string sentence = 5;
 }
