@@ -47,8 +47,11 @@ public class KBPEvaluator {
                 w.dependencyParents, w.dependencyTypes, w.entityPos, w.entity2Pos, w.entity, w.entity2);
         System.out.println(features);
 */
-        buildTestRelation();
+        //buildTestRelation();
+
+        prepareTest();
         readTestRelation();
+        readTest();
 
     }
 
@@ -68,18 +71,48 @@ public class KBPEvaluator {
 
         List<String> features = featureExtractor.getFeaturesForEntity(needle);
         System.out.println(needle.sentence);
-        QueryRelation.Mention mb = QueryRelation.Mention.newBuilder().addAllFeature(features).setSourceId(-1).setDestId(-1).setSentence(needle.sentence).build();
+        QueryRelation.Mention mb = QueryRelation.Mention.newBuilder().addAllFeature(features).setDestId(-1).setSourceId(-1).setFilename("blah").setSentence(needle.sentence).build();
         QueryRelation.Relation finalRelation = QueryRelation.Relation.newBuilder().setDestGuid("/m/01j6t").setRelType("NA").setSourceGuid("/m/0vmt").addMention(mb).build();
 
         BufferedOutputStream output = new BufferedOutputStream(new FileOutputStream("../Barry_Goldwater.pb"));
         finalRelation.writeTo(output);
     }
 
+    public static void prepareTest() throws IOException {
+        QueryRelation.Mention mb = QueryRelation.Mention.newBuilder().
+                addFeature("Blah blah blah blah feature").
+                setSourceId(-1).
+                setFilename("test.txt").
+                setDestId(-1).
+                setSentence("blah blah blah blah sentence").build();
+        QueryRelation.Relation rel = QueryRelation.Relation.newBuilder().
+                setDestGuid("q").
+                setRelType("NA").
+                setSourceGuid("s").
+                addMention(mb).build();
+        BufferedOutputStream output = new BufferedOutputStream(new FileOutputStream("../test.pb.gz"));
+        GZIPOutputStream gout = new GZIPOutputStream(output);
+        rel.writeDelimitedTo(gout);
+        gout.close();
+
+    }
+
     public static void readTestRelation() throws IOException {
         InputStream is = new GZIPInputStream(new BufferedInputStream
-                (new FileInputStream("../Barry_Goldwater.pb")));
+                (new FileInputStream("../test.pb.gz")));
 
         QueryRelation.Relation r = QueryRelation.Relation.parseDelimitedFrom(is);
+        System.out.println(r);
+
+    }
+
+    public static void readTest() throws IOException {
+        InputStream is = new GZIPInputStream(new BufferedInputStream
+                (new FileInputStream("./test-Multiple.pb.gz")));
+
+        QueryRelation.Relation r = QueryRelation.Relation.parseDelimitedFrom(is);
+        System.out.println(r);
+        System.out.println();
 
     }
 

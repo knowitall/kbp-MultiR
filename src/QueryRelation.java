@@ -1166,37 +1166,37 @@ public final class QueryRelation {
   public interface MentionOrBuilder
       extends com.google.protobuf.MessageOrBuilder {
 
-    // optional int32 sourceId = 1;
+    // optional int32 sourceId = 2;
     /**
-     * <code>optional int32 sourceId = 1;</code>
+     * <code>optional int32 sourceId = 2;</code>
      */
     boolean hasSourceId();
     /**
-     * <code>optional int32 sourceId = 1;</code>
+     * <code>optional int32 sourceId = 2;</code>
      */
     int getSourceId();
 
-    // optional int32 destId = 2;
+    // optional int32 destId = 3;
     /**
-     * <code>optional int32 destId = 2;</code>
+     * <code>optional int32 destId = 3;</code>
      */
     boolean hasDestId();
     /**
-     * <code>optional int32 destId = 2;</code>
+     * <code>optional int32 destId = 3;</code>
      */
     int getDestId();
 
-    // optional string filename = 3;
+    // optional string filename = 1;
     /**
-     * <code>optional string filename = 3;</code>
+     * <code>optional string filename = 1;</code>
      */
     boolean hasFilename();
     /**
-     * <code>optional string filename = 3;</code>
+     * <code>optional string filename = 1;</code>
      */
     java.lang.String getFilename();
     /**
-     * <code>optional string filename = 3;</code>
+     * <code>optional string filename = 1;</code>
      */
     com.google.protobuf.ByteString
         getFilenameBytes();
@@ -1287,19 +1287,19 @@ public final class QueryRelation {
               }
               break;
             }
-            case 8: {
+            case 10: {
+              bitField0_ |= 0x00000004;
+              filename_ = input.readBytes();
+              break;
+            }
+            case 16: {
               bitField0_ |= 0x00000001;
               sourceId_ = input.readInt32();
               break;
             }
-            case 16: {
+            case 24: {
               bitField0_ |= 0x00000002;
               destId_ = input.readInt32();
-              break;
-            }
-            case 26: {
-              bitField0_ |= 0x00000004;
-              filename_ = input.readBytes();
               break;
             }
             case 34: {
@@ -1358,49 +1358,49 @@ public final class QueryRelation {
     }
 
     private int bitField0_;
-    // optional int32 sourceId = 1;
-    public static final int SOURCEID_FIELD_NUMBER = 1;
+    // optional int32 sourceId = 2;
+    public static final int SOURCEID_FIELD_NUMBER = 2;
     private int sourceId_;
     /**
-     * <code>optional int32 sourceId = 1;</code>
+     * <code>optional int32 sourceId = 2;</code>
      */
     public boolean hasSourceId() {
       return ((bitField0_ & 0x00000001) == 0x00000001);
     }
     /**
-     * <code>optional int32 sourceId = 1;</code>
+     * <code>optional int32 sourceId = 2;</code>
      */
     public int getSourceId() {
       return sourceId_;
     }
 
-    // optional int32 destId = 2;
-    public static final int DESTID_FIELD_NUMBER = 2;
+    // optional int32 destId = 3;
+    public static final int DESTID_FIELD_NUMBER = 3;
     private int destId_;
     /**
-     * <code>optional int32 destId = 2;</code>
+     * <code>optional int32 destId = 3;</code>
      */
     public boolean hasDestId() {
       return ((bitField0_ & 0x00000002) == 0x00000002);
     }
     /**
-     * <code>optional int32 destId = 2;</code>
+     * <code>optional int32 destId = 3;</code>
      */
     public int getDestId() {
       return destId_;
     }
 
-    // optional string filename = 3;
-    public static final int FILENAME_FIELD_NUMBER = 3;
+    // optional string filename = 1;
+    public static final int FILENAME_FIELD_NUMBER = 1;
     private java.lang.Object filename_;
     /**
-     * <code>optional string filename = 3;</code>
+     * <code>optional string filename = 1;</code>
      */
     public boolean hasFilename() {
       return ((bitField0_ & 0x00000004) == 0x00000004);
     }
     /**
-     * <code>optional string filename = 3;</code>
+     * <code>optional string filename = 1;</code>
      */
     public java.lang.String getFilename() {
       java.lang.Object ref = filename_;
@@ -1417,7 +1417,7 @@ public final class QueryRelation {
       }
     }
     /**
-     * <code>optional string filename = 3;</code>
+     * <code>optional string filename = 1;</code>
      */
     public com.google.protobuf.ByteString
         getFilenameBytes() {
@@ -1529,14 +1529,14 @@ public final class QueryRelation {
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
       getSerializedSize();
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        output.writeBytes(1, getFilenameBytes());
+      }
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        output.writeInt32(1, sourceId_);
+        output.writeInt32(2, sourceId_);
       }
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
-        output.writeInt32(2, destId_);
-      }
-      if (((bitField0_ & 0x00000004) == 0x00000004)) {
-        output.writeBytes(3, getFilenameBytes());
+        output.writeInt32(3, destId_);
       }
       for (int i = 0; i < feature_.size(); i++) {
         output.writeBytes(4, feature_.getByteString(i));
@@ -1553,17 +1553,17 @@ public final class QueryRelation {
       if (size != -1) return size;
 
       size = 0;
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(1, getFilenameBytes());
+      }
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(1, sourceId_);
+          .computeInt32Size(2, sourceId_);
       }
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(2, destId_);
-      }
-      if (((bitField0_ & 0x00000004) == 0x00000004)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(3, getFilenameBytes());
+          .computeInt32Size(3, destId_);
       }
       {
         int dataSize = 0;
@@ -1827,22 +1827,22 @@ public final class QueryRelation {
       }
       private int bitField0_;
 
-      // optional int32 sourceId = 1;
+      // optional int32 sourceId = 2;
       private int sourceId_ ;
       /**
-       * <code>optional int32 sourceId = 1;</code>
+       * <code>optional int32 sourceId = 2;</code>
        */
       public boolean hasSourceId() {
         return ((bitField0_ & 0x00000001) == 0x00000001);
       }
       /**
-       * <code>optional int32 sourceId = 1;</code>
+       * <code>optional int32 sourceId = 2;</code>
        */
       public int getSourceId() {
         return sourceId_;
       }
       /**
-       * <code>optional int32 sourceId = 1;</code>
+       * <code>optional int32 sourceId = 2;</code>
        */
       public Builder setSourceId(int value) {
         bitField0_ |= 0x00000001;
@@ -1851,7 +1851,7 @@ public final class QueryRelation {
         return this;
       }
       /**
-       * <code>optional int32 sourceId = 1;</code>
+       * <code>optional int32 sourceId = 2;</code>
        */
       public Builder clearSourceId() {
         bitField0_ = (bitField0_ & ~0x00000001);
@@ -1860,22 +1860,22 @@ public final class QueryRelation {
         return this;
       }
 
-      // optional int32 destId = 2;
+      // optional int32 destId = 3;
       private int destId_ ;
       /**
-       * <code>optional int32 destId = 2;</code>
+       * <code>optional int32 destId = 3;</code>
        */
       public boolean hasDestId() {
         return ((bitField0_ & 0x00000002) == 0x00000002);
       }
       /**
-       * <code>optional int32 destId = 2;</code>
+       * <code>optional int32 destId = 3;</code>
        */
       public int getDestId() {
         return destId_;
       }
       /**
-       * <code>optional int32 destId = 2;</code>
+       * <code>optional int32 destId = 3;</code>
        */
       public Builder setDestId(int value) {
         bitField0_ |= 0x00000002;
@@ -1884,7 +1884,7 @@ public final class QueryRelation {
         return this;
       }
       /**
-       * <code>optional int32 destId = 2;</code>
+       * <code>optional int32 destId = 3;</code>
        */
       public Builder clearDestId() {
         bitField0_ = (bitField0_ & ~0x00000002);
@@ -1893,16 +1893,16 @@ public final class QueryRelation {
         return this;
       }
 
-      // optional string filename = 3;
+      // optional string filename = 1;
       private java.lang.Object filename_ = "";
       /**
-       * <code>optional string filename = 3;</code>
+       * <code>optional string filename = 1;</code>
        */
       public boolean hasFilename() {
         return ((bitField0_ & 0x00000004) == 0x00000004);
       }
       /**
-       * <code>optional string filename = 3;</code>
+       * <code>optional string filename = 1;</code>
        */
       public java.lang.String getFilename() {
         java.lang.Object ref = filename_;
@@ -1916,7 +1916,7 @@ public final class QueryRelation {
         }
       }
       /**
-       * <code>optional string filename = 3;</code>
+       * <code>optional string filename = 1;</code>
        */
       public com.google.protobuf.ByteString
           getFilenameBytes() {
@@ -1932,7 +1932,7 @@ public final class QueryRelation {
         }
       }
       /**
-       * <code>optional string filename = 3;</code>
+       * <code>optional string filename = 1;</code>
        */
       public Builder setFilename(
           java.lang.String value) {
@@ -1945,7 +1945,7 @@ public final class QueryRelation {
         return this;
       }
       /**
-       * <code>optional string filename = 3;</code>
+       * <code>optional string filename = 1;</code>
        */
       public Builder clearFilename() {
         bitField0_ = (bitField0_ & ~0x00000004);
@@ -1954,7 +1954,7 @@ public final class QueryRelation {
         return this;
       }
       /**
-       * <code>optional string filename = 3;</code>
+       * <code>optional string filename = 1;</code>
        */
       public Builder setFilenameBytes(
           com.google.protobuf.ByteString value) {
@@ -2167,8 +2167,8 @@ public final class QueryRelation {
       "\n\023QueryRelation.proto\"\\\n\010Relation\022\022\n\nsou" +
       "rceGuid\030\001 \001(\t\022\020\n\010destGuid\030\002 \001(\t\022\017\n\007relTy" +
       "pe\030\003 \001(\t\022\031\n\007mention\030\004 \003(\0132\010.Mention\"`\n\007M" +
-      "ention\022\020\n\010sourceId\030\001 \001(\005\022\016\n\006destId\030\002 \001(\005" +
-      "\022\020\n\010filename\030\003 \001(\t\022\017\n\007feature\030\004 \003(\t\022\020\n\010s" +
+      "ention\022\020\n\010sourceId\030\002 \001(\005\022\016\n\006destId\030\003 \001(\005" +
+      "\022\020\n\010filename\030\001 \001(\t\022\017\n\007feature\030\004 \003(\t\022\020\n\010s" +
       "entence\030\005 \002(\t"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =

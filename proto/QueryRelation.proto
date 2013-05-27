@@ -6,9 +6,9 @@ message Relation {
 }
 
 message Mention {
-    optional int32 sourceId = 1;
-    optional int32 destId = 2;
-    optional string filename = 3;
+    optional int32 sourceId = 2;
+    optional int32 destId = 3;
+    optional string filename = 1;
     repeated string feature = 4;
     required string sentence = 5;
 }
