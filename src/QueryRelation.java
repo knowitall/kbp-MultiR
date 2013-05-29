@@ -9,47 +9,47 @@ public final class QueryRelation {
   public interface RelationOrBuilder
       extends com.google.protobuf.MessageOrBuilder {
 
-    // required string sourceGuid = 1;
+    // optional string sourceGuid = 1;
     /**
-     * <code>required string sourceGuid = 1;</code>
+     * <code>optional string sourceGuid = 1;</code>
      */
     boolean hasSourceGuid();
     /**
-     * <code>required string sourceGuid = 1;</code>
+     * <code>optional string sourceGuid = 1;</code>
      */
     java.lang.String getSourceGuid();
     /**
-     * <code>required string sourceGuid = 1;</code>
+     * <code>optional string sourceGuid = 1;</code>
      */
     com.google.protobuf.ByteString
         getSourceGuidBytes();
 
-    // required string destGuid = 2;
+    // optional string destGuid = 2;
     /**
-     * <code>required string destGuid = 2;</code>
+     * <code>optional string destGuid = 2;</code>
      */
     boolean hasDestGuid();
     /**
-     * <code>required string destGuid = 2;</code>
+     * <code>optional string destGuid = 2;</code>
      */
     java.lang.String getDestGuid();
     /**
-     * <code>required string destGuid = 2;</code>
+     * <code>optional string destGuid = 2;</code>
      */
     com.google.protobuf.ByteString
         getDestGuidBytes();
 
-    // required string relType = 3;
+    // optional string relType = 3;
     /**
-     * <code>required string relType = 3;</code>
+     * <code>optional string relType = 3;</code>
      */
     boolean hasRelType();
     /**
-     * <code>required string relType = 3;</code>
+     * <code>optional string relType = 3;</code>
      */
     java.lang.String getRelType();
     /**
-     * <code>required string relType = 3;</code>
+     * <code>optional string relType = 3;</code>
      */
     com.google.protobuf.ByteString
         getRelTypeBytes();
@@ -196,17 +196,17 @@ public final class QueryRelation {
     }
 
     private int bitField0_;
-    // required string sourceGuid = 1;
+    // optional string sourceGuid = 1;
     public static final int SOURCEGUID_FIELD_NUMBER = 1;
     private java.lang.Object sourceGuid_;
     /**
-     * <code>required string sourceGuid = 1;</code>
+     * <code>optional string sourceGuid = 1;</code>
      */
     public boolean hasSourceGuid() {
       return ((bitField0_ & 0x00000001) == 0x00000001);
     }
     /**
-     * <code>required string sourceGuid = 1;</code>
+     * <code>optional string sourceGuid = 1;</code>
      */
     public java.lang.String getSourceGuid() {
       java.lang.Object ref = sourceGuid_;
@@ -223,7 +223,7 @@ public final class QueryRelation {
       }
     }
     /**
-     * <code>required string sourceGuid = 1;</code>
+     * <code>optional string sourceGuid = 1;</code>
      */
     public com.google.protobuf.ByteString
         getSourceGuidBytes() {
@@ -239,17 +239,17 @@ public final class QueryRelation {
       }
     }
 
-    // required string destGuid = 2;
+    // optional string destGuid = 2;
     public static final int DESTGUID_FIELD_NUMBER = 2;
     private java.lang.Object destGuid_;
     /**
-     * <code>required string destGuid = 2;</code>
+     * <code>optional string destGuid = 2;</code>
      */
     public boolean hasDestGuid() {
       return ((bitField0_ & 0x00000002) == 0x00000002);
     }
     /**
-     * <code>required string destGuid = 2;</code>
+     * <code>optional string destGuid = 2;</code>
      */
     public java.lang.String getDestGuid() {
       java.lang.Object ref = destGuid_;
@@ -266,7 +266,7 @@ public final class QueryRelation {
       }
     }
     /**
-     * <code>required string destGuid = 2;</code>
+     * <code>optional string destGuid = 2;</code>
      */
     public com.google.protobuf.ByteString
         getDestGuidBytes() {
@@ -282,17 +282,17 @@ public final class QueryRelation {
       }
     }
 
-    // required string relType = 3;
+    // optional string relType = 3;
     public static final int RELTYPE_FIELD_NUMBER = 3;
     private java.lang.Object relType_;
     /**
-     * <code>required string relType = 3;</code>
+     * <code>optional string relType = 3;</code>
      */
     public boolean hasRelType() {
       return ((bitField0_ & 0x00000004) == 0x00000004);
     }
     /**
-     * <code>required string relType = 3;</code>
+     * <code>optional string relType = 3;</code>
      */
     public java.lang.String getRelType() {
       java.lang.Object ref = relType_;
@@ -309,7 +309,7 @@ public final class QueryRelation {
       }
     }
     /**
-     * <code>required string relType = 3;</code>
+     * <code>optional string relType = 3;</code>
      */
     public com.google.protobuf.ByteString
         getRelTypeBytes() {
@@ -372,18 +372,6 @@ public final class QueryRelation {
       byte isInitialized = memoizedIsInitialized;
       if (isInitialized != -1) return isInitialized == 1;
 
-      if (!hasSourceGuid()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      if (!hasDestGuid()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      if (!hasRelType()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
       for (int i = 0; i < getMentionCount(); i++) {
         if (!getMention(i).isInitialized()) {
           memoizedIsInitialized = 0;
@@ -674,18 +662,6 @@ public final class QueryRelation {
       }
 
       public final boolean isInitialized() {
-        if (!hasSourceGuid()) {
-          
-          return false;
-        }
-        if (!hasDestGuid()) {
-          
-          return false;
-        }
-        if (!hasRelType()) {
-          
-          return false;
-        }
         for (int i = 0; i < getMentionCount(); i++) {
           if (!getMention(i).isInitialized()) {
             
@@ -714,16 +690,16 @@ public final class QueryRelation {
       }
       private int bitField0_;
 
-      // required string sourceGuid = 1;
+      // optional string sourceGuid = 1;
       private java.lang.Object sourceGuid_ = "";
       /**
-       * <code>required string sourceGuid = 1;</code>
+       * <code>optional string sourceGuid = 1;</code>
        */
       public boolean hasSourceGuid() {
         return ((bitField0_ & 0x00000001) == 0x00000001);
       }
       /**
-       * <code>required string sourceGuid = 1;</code>
+       * <code>optional string sourceGuid = 1;</code>
        */
       public java.lang.String getSourceGuid() {
         java.lang.Object ref = sourceGuid_;
@@ -737,7 +713,7 @@ public final class QueryRelation {
         }
       }
       /**
-       * <code>required string sourceGuid = 1;</code>
+       * <code>optional string sourceGuid = 1;</code>
        */
       public com.google.protobuf.ByteString
           getSourceGuidBytes() {
@@ -753,7 +729,7 @@ public final class QueryRelation {
         }
       }
       /**
-       * <code>required string sourceGuid = 1;</code>
+       * <code>optional string sourceGuid = 1;</code>
        */
       public Builder setSourceGuid(
           java.lang.String value) {
@@ -766,7 +742,7 @@ public final class QueryRelation {
         return this;
       }
       /**
-       * <code>required string sourceGuid = 1;</code>
+       * <code>optional string sourceGuid = 1;</code>
        */
       public Builder clearSourceGuid() {
         bitField0_ = (bitField0_ & ~0x00000001);
@@ -775,7 +751,7 @@ public final class QueryRelation {
         return this;
       }
       /**
-       * <code>required string sourceGuid = 1;</code>
+       * <code>optional string sourceGuid = 1;</code>
        */
       public Builder setSourceGuidBytes(
           com.google.protobuf.ByteString value) {
@@ -788,16 +764,16 @@ public final class QueryRelation {
         return this;
       }
 
-      // required string destGuid = 2;
+      // optional string destGuid = 2;
       private java.lang.Object destGuid_ = "";
       /**
-       * <code>required string destGuid = 2;</code>
+       * <code>optional string destGuid = 2;</code>
        */
       public boolean hasDestGuid() {
         return ((bitField0_ & 0x00000002) == 0x00000002);
       }
       /**
-       * <code>required string destGuid = 2;</code>
+       * <code>optional string destGuid = 2;</code>
        */
       public java.lang.String getDestGuid() {
         java.lang.Object ref = destGuid_;
@@ -811,7 +787,7 @@ public final class QueryRelation {
         }
       }
       /**
-       * <code>required string destGuid = 2;</code>
+       * <code>optional string destGuid = 2;</code>
        */
       public com.google.protobuf.ByteString
           getDestGuidBytes() {
@@ -827,7 +803,7 @@ public final class QueryRelation {
         }
       }
       /**
-       * <code>required string destGuid = 2;</code>
+       * <code>optional string destGuid = 2;</code>
        */
       public Builder setDestGuid(
           java.lang.String value) {
@@ -840,7 +816,7 @@ public final class QueryRelation {
         return this;
       }
       /**
-       * <code>required string destGuid = 2;</code>
+       * <code>optional string destGuid = 2;</code>
        */
       public Builder clearDestGuid() {
         bitField0_ = (bitField0_ & ~0x00000002);
@@ -849,7 +825,7 @@ public final class QueryRelation {
         return this;
       }
       /**
-       * <code>required string destGuid = 2;</code>
+       * <code>optional string destGuid = 2;</code>
        */
       public Builder setDestGuidBytes(
           com.google.protobuf.ByteString value) {
@@ -862,16 +838,16 @@ public final class QueryRelation {
         return this;
       }
 
-      // required string relType = 3;
+      // optional string relType = 3;
       private java.lang.Object relType_ = "";
       /**
-       * <code>required string relType = 3;</code>
+       * <code>optional string relType = 3;</code>
        */
       public boolean hasRelType() {
         return ((bitField0_ & 0x00000004) == 0x00000004);
       }
       /**
-       * <code>required string relType = 3;</code>
+       * <code>optional string relType = 3;</code>
        */
       public java.lang.String getRelType() {
         java.lang.Object ref = relType_;
@@ -885,7 +861,7 @@ public final class QueryRelation {
         }
       }
       /**
-       * <code>required string relType = 3;</code>
+       * <code>optional string relType = 3;</code>
        */
       public com.google.protobuf.ByteString
           getRelTypeBytes() {
@@ -901,7 +877,7 @@ public final class QueryRelation {
         }
       }
       /**
-       * <code>required string relType = 3;</code>
+       * <code>optional string relType = 3;</code>
        */
       public Builder setRelType(
           java.lang.String value) {
@@ -914,7 +890,7 @@ public final class QueryRelation {
         return this;
       }
       /**
-       * <code>required string relType = 3;</code>
+       * <code>optional string relType = 3;</code>
        */
       public Builder clearRelType() {
         bitField0_ = (bitField0_ & ~0x00000004);
@@ -923,7 +899,7 @@ public final class QueryRelation {
         return this;
       }
       /**
-       * <code>required string relType = 3;</code>
+       * <code>optional string relType = 3;</code>
        */
       public Builder setRelTypeBytes(
           com.google.protobuf.ByteString value) {
@@ -1190,57 +1166,72 @@ public final class QueryRelation {
   public interface MentionOrBuilder
       extends com.google.protobuf.MessageOrBuilder {
 
-    // required int32 sourceId = 1;
+    // optional int32 sourceId = 2;
     /**
-     * <code>required int32 sourceId = 1;</code>
+     * <code>optional int32 sourceId = 2;</code>
      */
     boolean hasSourceId();
     /**
-     * <code>required int32 sourceId = 1;</code>
+     * <code>optional int32 sourceId = 2;</code>
      */
     int getSourceId();
 
-    // required int32 destId = 2;
+    // optional int32 destId = 3;
     /**
-     * <code>required int32 destId = 2;</code>
+     * <code>optional int32 destId = 3;</code>
      */
     boolean hasDestId();
     /**
-     * <code>required int32 destId = 2;</code>
+     * <code>optional int32 destId = 3;</code>
      */
     int getDestId();
 
-    // repeated string feature = 3;
+    // optional string filename = 1;
     /**
-     * <code>repeated string feature = 3;</code>
+     * <code>optional string filename = 1;</code>
+     */
+    boolean hasFilename();
+    /**
+     * <code>optional string filename = 1;</code>
+     */
+    java.lang.String getFilename();
+    /**
+     * <code>optional string filename = 1;</code>
+     */
+    com.google.protobuf.ByteString
+        getFilenameBytes();
+
+    // repeated string feature = 4;
+    /**
+     * <code>repeated string feature = 4;</code>
      */
     java.util.List<java.lang.String>
     getFeatureList();
     /**
-     * <code>repeated string feature = 3;</code>
+     * <code>repeated string feature = 4;</code>
      */
     int getFeatureCount();
     /**
-     * <code>repeated string feature = 3;</code>
+     * <code>repeated string feature = 4;</code>
      */
     java.lang.String getFeature(int index);
     /**
-     * <code>repeated string feature = 3;</code>
+     * <code>repeated string feature = 4;</code>
      */
     com.google.protobuf.ByteString
         getFeatureBytes(int index);
 
-    // required string sentence = 4;
+    // required string sentence = 5;
     /**
-     * <code>required string sentence = 4;</code>
+     * <code>required string sentence = 5;</code>
      */
     boolean hasSentence();
     /**
-     * <code>required string sentence = 4;</code>
+     * <code>required string sentence = 5;</code>
      */
     java.lang.String getSentence();
     /**
-     * <code>required string sentence = 4;</code>
+     * <code>required string sentence = 5;</code>
      */
     com.google.protobuf.ByteString
         getSentenceBytes();
@@ -1296,26 +1287,31 @@ public final class QueryRelation {
               }
               break;
             }
-            case 8: {
+            case 10: {
+              bitField0_ |= 0x00000004;
+              filename_ = input.readBytes();
+              break;
+            }
+            case 16: {
               bitField0_ |= 0x00000001;
               sourceId_ = input.readInt32();
               break;
             }
-            case 16: {
+            case 24: {
               bitField0_ |= 0x00000002;
               destId_ = input.readInt32();
               break;
             }
-            case 26: {
-              if (!((mutable_bitField0_ & 0x00000004) == 0x00000004)) {
+            case 34: {
+              if (!((mutable_bitField0_ & 0x00000008) == 0x00000008)) {
                 feature_ = new com.google.protobuf.LazyStringArrayList();
-                mutable_bitField0_ |= 0x00000004;
+                mutable_bitField0_ |= 0x00000008;
               }
               feature_.add(input.readBytes());
               break;
             }
-            case 34: {
-              bitField0_ |= 0x00000004;
+            case 42: {
+              bitField0_ |= 0x00000008;
               sentence_ = input.readBytes();
               break;
             }
@@ -1327,7 +1323,7 @@ public final class QueryRelation {
         throw new com.google.protobuf.InvalidProtocolBufferException(
             e.getMessage()).setUnfinishedMessage(this);
       } finally {
-        if (((mutable_bitField0_ & 0x00000004) == 0x00000004)) {
+        if (((mutable_bitField0_ & 0x00000008) == 0x00000008)) {
           feature_ = new com.google.protobuf.UnmodifiableLazyStringList(feature_);
         }
         this.unknownFields = unknownFields.build();
@@ -1362,79 +1358,122 @@ public final class QueryRelation {
     }
 
     private int bitField0_;
-    // required int32 sourceId = 1;
-    public static final int SOURCEID_FIELD_NUMBER = 1;
+    // optional int32 sourceId = 2;
+    public static final int SOURCEID_FIELD_NUMBER = 2;
     private int sourceId_;
     /**
-     * <code>required int32 sourceId = 1;</code>
+     * <code>optional int32 sourceId = 2;</code>
      */
     public boolean hasSourceId() {
       return ((bitField0_ & 0x00000001) == 0x00000001);
     }
     /**
-     * <code>required int32 sourceId = 1;</code>
+     * <code>optional int32 sourceId = 2;</code>
      */
     public int getSourceId() {
       return sourceId_;
     }
 
-    // required int32 destId = 2;
-    public static final int DESTID_FIELD_NUMBER = 2;
+    // optional int32 destId = 3;
+    public static final int DESTID_FIELD_NUMBER = 3;
     private int destId_;
     /**
-     * <code>required int32 destId = 2;</code>
+     * <code>optional int32 destId = 3;</code>
      */
     public boolean hasDestId() {
       return ((bitField0_ & 0x00000002) == 0x00000002);
     }
     /**
-     * <code>required int32 destId = 2;</code>
+     * <code>optional int32 destId = 3;</code>
      */
     public int getDestId() {
       return destId_;
     }
 
-    // repeated string feature = 3;
-    public static final int FEATURE_FIELD_NUMBER = 3;
+    // optional string filename = 1;
+    public static final int FILENAME_FIELD_NUMBER = 1;
+    private java.lang.Object filename_;
+    /**
+     * <code>optional string filename = 1;</code>
+     */
+    public boolean hasFilename() {
+      return ((bitField0_ & 0x00000004) == 0x00000004);
+    }
+    /**
+     * <code>optional string filename = 1;</code>
+     */
+    public java.lang.String getFilename() {
+      java.lang.Object ref = filename_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          filename_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string filename = 1;</code>
+     */
+    public com.google.protobuf.ByteString
+        getFilenameBytes() {
+      java.lang.Object ref = filename_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        filename_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    // repeated string feature = 4;
+    public static final int FEATURE_FIELD_NUMBER = 4;
     private com.google.protobuf.LazyStringList feature_;
     /**
-     * <code>repeated string feature = 3;</code>
+     * <code>repeated string feature = 4;</code>
      */
     public java.util.List<java.lang.String>
         getFeatureList() {
       return feature_;
     }
     /**
-     * <code>repeated string feature = 3;</code>
+     * <code>repeated string feature = 4;</code>
      */
     public int getFeatureCount() {
       return feature_.size();
     }
     /**
-     * <code>repeated string feature = 3;</code>
+     * <code>repeated string feature = 4;</code>
      */
     public java.lang.String getFeature(int index) {
       return feature_.get(index);
     }
     /**
-     * <code>repeated string feature = 3;</code>
+     * <code>repeated string feature = 4;</code>
      */
     public com.google.protobuf.ByteString
         getFeatureBytes(int index) {
       return feature_.getByteString(index);
     }
 
-    // required string sentence = 4;
-    public static final int SENTENCE_FIELD_NUMBER = 4;
+    // required string sentence = 5;
+    public static final int SENTENCE_FIELD_NUMBER = 5;
     private java.lang.Object sentence_;
     /**
-     * <code>required string sentence = 4;</code>
+     * <code>required string sentence = 5;</code>
      */
     public boolean hasSentence() {
-      return ((bitField0_ & 0x00000004) == 0x00000004);
+      return ((bitField0_ & 0x00000008) == 0x00000008);
     }
     /**
-     * <code>required string sentence = 4;</code>
+     * <code>required string sentence = 5;</code>
      */
     public java.lang.String getSentence() {
       java.lang.Object ref = sentence_;
@@ -1451,7 +1490,7 @@ public final class QueryRelation {
       }
     }
     /**
-     * <code>required string sentence = 4;</code>
+     * <code>required string sentence = 5;</code>
      */
     public com.google.protobuf.ByteString
         getSentenceBytes() {
@@ -1470,6 +1509,7 @@ public final class QueryRelation {
     private void initFields() {
       sourceId_ = 0;
       destId_ = 0;
+      filename_ = "";
       feature_ = com.google.protobuf.LazyStringArrayList.EMPTY;
       sentence_ = "";
     }
@@ -1478,14 +1518,6 @@ public final class QueryRelation {
       byte isInitialized = memoizedIsInitialized;
       if (isInitialized != -1) return isInitialized == 1;
 
-      if (!hasSourceId()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      if (!hasDestId()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
       if (!hasSentence()) {
         memoizedIsInitialized = 0;
         return false;
@@ -1497,17 +1529,20 @@ public final class QueryRelation {
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
       getSerializedSize();
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        output.writeBytes(1, getFilenameBytes());
+      }
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        output.writeInt32(1, sourceId_);
+        output.writeInt32(2, sourceId_);
       }
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
-        output.writeInt32(2, destId_);
+        output.writeInt32(3, destId_);
       }
       for (int i = 0; i < feature_.size(); i++) {
-        output.writeBytes(3, feature_.getByteString(i));
+        output.writeBytes(4, feature_.getByteString(i));
       }
-      if (((bitField0_ & 0x00000004) == 0x00000004)) {
-        output.writeBytes(4, getSentenceBytes());
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        output.writeBytes(5, getSentenceBytes());
       }
       getUnknownFields().writeTo(output);
     }
@@ -1518,13 +1553,17 @@ public final class QueryRelation {
       if (size != -1) return size;
 
       size = 0;
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(1, getFilenameBytes());
+      }
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(1, sourceId_);
+          .computeInt32Size(2, sourceId_);
       }
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(2, destId_);
+          .computeInt32Size(3, destId_);
       }
       {
         int dataSize = 0;
@@ -1535,9 +1574,9 @@ public final class QueryRelation {
         size += dataSize;
         size += 1 * getFeatureList().size();
       }
-      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(4, getSentenceBytes());
+          .computeBytesSize(5, getSentenceBytes());
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -1659,10 +1698,12 @@ public final class QueryRelation {
         bitField0_ = (bitField0_ & ~0x00000001);
         destId_ = 0;
         bitField0_ = (bitField0_ & ~0x00000002);
-        feature_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+        filename_ = "";
         bitField0_ = (bitField0_ & ~0x00000004);
-        sentence_ = "";
+        feature_ = com.google.protobuf.LazyStringArrayList.EMPTY;
         bitField0_ = (bitField0_ & ~0x00000008);
+        sentence_ = "";
+        bitField0_ = (bitField0_ & ~0x00000010);
         return this;
       }
 
@@ -1699,14 +1740,18 @@ public final class QueryRelation {
           to_bitField0_ |= 0x00000002;
         }
         result.destId_ = destId_;
-        if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+          to_bitField0_ |= 0x00000004;
+        }
+        result.filename_ = filename_;
+        if (((bitField0_ & 0x00000008) == 0x00000008)) {
           feature_ = new com.google.protobuf.UnmodifiableLazyStringList(
               feature_);
-          bitField0_ = (bitField0_ & ~0x00000004);
+          bitField0_ = (bitField0_ & ~0x00000008);
         }
         result.feature_ = feature_;
-        if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
-          to_bitField0_ |= 0x00000004;
+        if (((from_bitField0_ & 0x00000010) == 0x00000010)) {
+          to_bitField0_ |= 0x00000008;
         }
         result.sentence_ = sentence_;
         result.bitField0_ = to_bitField0_;
@@ -1731,10 +1776,15 @@ public final class QueryRelation {
         if (other.hasDestId()) {
           setDestId(other.getDestId());
         }
+        if (other.hasFilename()) {
+          bitField0_ |= 0x00000004;
+          filename_ = other.filename_;
+          onChanged();
+        }
         if (!other.feature_.isEmpty()) {
           if (feature_.isEmpty()) {
             feature_ = other.feature_;
-            bitField0_ = (bitField0_ & ~0x00000004);
+            bitField0_ = (bitField0_ & ~0x00000008);
           } else {
             ensureFeatureIsMutable();
             feature_.addAll(other.feature_);
@@ -1742,7 +1792,7 @@ public final class QueryRelation {
           onChanged();
         }
         if (other.hasSentence()) {
-          bitField0_ |= 0x00000008;
+          bitField0_ |= 0x00000010;
           sentence_ = other.sentence_;
           onChanged();
         }
@@ -1751,14 +1801,6 @@ public final class QueryRelation {
       }
 
       public final boolean isInitialized() {
-        if (!hasSourceId()) {
-          
-          return false;
-        }
-        if (!hasDestId()) {
-          
-          return false;
-        }
         if (!hasSentence()) {
           
           return false;
@@ -1785,22 +1827,22 @@ public final class QueryRelation {
       }
       private int bitField0_;
 
-      // required int32 sourceId = 1;
+      // optional int32 sourceId = 2;
       private int sourceId_ ;
       /**
-       * <code>required int32 sourceId = 1;</code>
+       * <code>optional int32 sourceId = 2;</code>
        */
       public boolean hasSourceId() {
         return ((bitField0_ & 0x00000001) == 0x00000001);
       }
       /**
-       * <code>required int32 sourceId = 1;</code>
+       * <code>optional int32 sourceId = 2;</code>
        */
       public int getSourceId() {
         return sourceId_;
       }
       /**
-       * <code>required int32 sourceId = 1;</code>
+       * <code>optional int32 sourceId = 2;</code>
        */
       public Builder setSourceId(int value) {
         bitField0_ |= 0x00000001;
@@ -1809,7 +1851,7 @@ public final class QueryRelation {
         return this;
       }
       /**
-       * <code>required int32 sourceId = 1;</code>
+       * <code>optional int32 sourceId = 2;</code>
        */
       public Builder clearSourceId() {
         bitField0_ = (bitField0_ & ~0x00000001);
@@ -1818,22 +1860,22 @@ public final class QueryRelation {
         return this;
       }
 
-      // required int32 destId = 2;
+      // optional int32 destId = 3;
       private int destId_ ;
       /**
-       * <code>required int32 destId = 2;</code>
+       * <code>optional int32 destId = 3;</code>
        */
       public boolean hasDestId() {
         return ((bitField0_ & 0x00000002) == 0x00000002);
       }
       /**
-       * <code>required int32 destId = 2;</code>
+       * <code>optional int32 destId = 3;</code>
        */
       public int getDestId() {
         return destId_;
       }
       /**
-       * <code>required int32 destId = 2;</code>
+       * <code>optional int32 destId = 3;</code>
        */
       public Builder setDestId(int value) {
         bitField0_ |= 0x00000002;
@@ -1842,7 +1884,7 @@ public final class QueryRelation {
         return this;
       }
       /**
-       * <code>required int32 destId = 2;</code>
+       * <code>optional int32 destId = 3;</code>
        */
       public Builder clearDestId() {
         bitField0_ = (bitField0_ & ~0x00000002);
@@ -1851,42 +1893,116 @@ public final class QueryRelation {
         return this;
       }
 
-      // repeated string feature = 3;
+      // optional string filename = 1;
+      private java.lang.Object filename_ = "";
+      /**
+       * <code>optional string filename = 1;</code>
+       */
+      public boolean hasFilename() {
+        return ((bitField0_ & 0x00000004) == 0x00000004);
+      }
+      /**
+       * <code>optional string filename = 1;</code>
+       */
+      public java.lang.String getFilename() {
+        java.lang.Object ref = filename_;
+        if (!(ref instanceof java.lang.String)) {
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          filename_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string filename = 1;</code>
+       */
+      public com.google.protobuf.ByteString
+          getFilenameBytes() {
+        java.lang.Object ref = filename_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          filename_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string filename = 1;</code>
+       */
+      public Builder setFilename(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000004;
+        filename_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string filename = 1;</code>
+       */
+      public Builder clearFilename() {
+        bitField0_ = (bitField0_ & ~0x00000004);
+        filename_ = getDefaultInstance().getFilename();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string filename = 1;</code>
+       */
+      public Builder setFilenameBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000004;
+        filename_ = value;
+        onChanged();
+        return this;
+      }
+
+      // repeated string feature = 4;
       private com.google.protobuf.LazyStringList feature_ = com.google.protobuf.LazyStringArrayList.EMPTY;
       private void ensureFeatureIsMutable() {
-        if (!((bitField0_ & 0x00000004) == 0x00000004)) {
+        if (!((bitField0_ & 0x00000008) == 0x00000008)) {
           feature_ = new com.google.protobuf.LazyStringArrayList(feature_);
-          bitField0_ |= 0x00000004;
+          bitField0_ |= 0x00000008;
          }
       }
       /**
-       * <code>repeated string feature = 3;</code>
+       * <code>repeated string feature = 4;</code>
        */
       public java.util.List<java.lang.String>
           getFeatureList() {
         return java.util.Collections.unmodifiableList(feature_);
       }
       /**
-       * <code>repeated string feature = 3;</code>
+       * <code>repeated string feature = 4;</code>
        */
       public int getFeatureCount() {
         return feature_.size();
       }
       /**
-       * <code>repeated string feature = 3;</code>
+       * <code>repeated string feature = 4;</code>
        */
       public java.lang.String getFeature(int index) {
         return feature_.get(index);
       }
       /**
-       * <code>repeated string feature = 3;</code>
+       * <code>repeated string feature = 4;</code>
        */
       public com.google.protobuf.ByteString
           getFeatureBytes(int index) {
         return feature_.getByteString(index);
       }
       /**
-       * <code>repeated string feature = 3;</code>
+       * <code>repeated string feature = 4;</code>
        */
       public Builder setFeature(
           int index, java.lang.String value) {
@@ -1899,7 +2015,7 @@ public final class QueryRelation {
         return this;
       }
       /**
-       * <code>repeated string feature = 3;</code>
+       * <code>repeated string feature = 4;</code>
        */
       public Builder addFeature(
           java.lang.String value) {
@@ -1912,7 +2028,7 @@ public final class QueryRelation {
         return this;
       }
       /**
-       * <code>repeated string feature = 3;</code>
+       * <code>repeated string feature = 4;</code>
        */
       public Builder addAllFeature(
           java.lang.Iterable<java.lang.String> values) {
@@ -1922,16 +2038,16 @@ public final class QueryRelation {
         return this;
       }
       /**
-       * <code>repeated string feature = 3;</code>
+       * <code>repeated string feature = 4;</code>
        */
       public Builder clearFeature() {
         feature_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-        bitField0_ = (bitField0_ & ~0x00000004);
+        bitField0_ = (bitField0_ & ~0x00000008);
         onChanged();
         return this;
       }
       /**
-       * <code>repeated string feature = 3;</code>
+       * <code>repeated string feature = 4;</code>
        */
       public Builder addFeatureBytes(
           com.google.protobuf.ByteString value) {
@@ -1944,16 +2060,16 @@ public final class QueryRelation {
         return this;
       }
 
-      // required string sentence = 4;
+      // required string sentence = 5;
       private java.lang.Object sentence_ = "";
       /**
-       * <code>required string sentence = 4;</code>
+       * <code>required string sentence = 5;</code>
        */
       public boolean hasSentence() {
-        return ((bitField0_ & 0x00000008) == 0x00000008);
+        return ((bitField0_ & 0x00000010) == 0x00000010);
       }
       /**
-       * <code>required string sentence = 4;</code>
+       * <code>required string sentence = 5;</code>
        */
       public java.lang.String getSentence() {
         java.lang.Object ref = sentence_;
@@ -1967,7 +2083,7 @@ public final class QueryRelation {
         }
       }
       /**
-       * <code>required string sentence = 4;</code>
+       * <code>required string sentence = 5;</code>
        */
       public com.google.protobuf.ByteString
           getSentenceBytes() {
@@ -1983,36 +2099,36 @@ public final class QueryRelation {
         }
       }
       /**
-       * <code>required string sentence = 4;</code>
+       * <code>required string sentence = 5;</code>
        */
       public Builder setSentence(
           java.lang.String value) {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000008;
+  bitField0_ |= 0x00000010;
         sentence_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>required string sentence = 4;</code>
+       * <code>required string sentence = 5;</code>
        */
       public Builder clearSentence() {
-        bitField0_ = (bitField0_ & ~0x00000008);
+        bitField0_ = (bitField0_ & ~0x00000010);
         sentence_ = getDefaultInstance().getSentence();
         onChanged();
         return this;
       }
       /**
-       * <code>required string sentence = 4;</code>
+       * <code>required string sentence = 5;</code>
        */
       public Builder setSentenceBytes(
           com.google.protobuf.ByteString value) {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000008;
+  bitField0_ |= 0x00000010;
         sentence_ = value;
         onChanged();
         return this;
@@ -2049,10 +2165,11 @@ public final class QueryRelation {
   static {
     java.lang.String[] descriptorData = {
       "\n\023QueryRelation.proto\"\\\n\010Relation\022\022\n\nsou" +
-      "rceGuid\030\001 \002(\t\022\020\n\010destGuid\030\002 \002(\t\022\017\n\007relTy" +
-      "pe\030\003 \002(\t\022\031\n\007mention\030\004 \003(\0132\010.Mention\"N\n\007M" +
-      "ention\022\020\n\010sourceId\030\001 \002(\005\022\016\n\006destId\030\002 \002(\005" +
-      "\022\017\n\007feature\030\003 \003(\t\022\020\n\010sentence\030\004 \002(\t"
+      "rceGuid\030\001 \001(\t\022\020\n\010destGuid\030\002 \001(\t\022\017\n\007relTy" +
+      "pe\030\003 \001(\t\022\031\n\007mention\030\004 \003(\0132\010.Mention\"`\n\007M" +
+      "ention\022\020\n\010sourceId\030\002 \001(\005\022\016\n\006destId\030\003 \001(\005" +
+      "\022\020\n\010filename\030\001 \001(\t\022\017\n\007feature\030\004 \003(\t\022\020\n\010s" +
+      "entence\030\005 \002(\t"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
@@ -2070,7 +2187,7 @@ public final class QueryRelation {
           internal_static_Mention_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_Mention_descriptor,
-              new java.lang.String[] { "SourceId", "DestId", "Feature", "Sentence", });
+              new java.lang.String[] { "SourceId", "DestId", "Filename", "Feature", "Sentence", });
           return null;
         }
       };

@@ -22,66 +22,10 @@ public class KBPEvaluator {
         Map<String, String> freeBaseToKBP = new HashMap<String, String>();
 
         RelationECML featureExtractor = new RelationECML();
-        /*String[] tokens = {"Other", "quantitative", "funds", "run", "by", "firms", ",",
-                "including", "AQR", "Capital", "Management", "LLC", "and", "Highbridge",
-                "Capital", "Management", "LLC", ",", "may", "also", "have", "sustained",
-                "heavy", "losses", "."};
 
-        String[] posTags = {"JJ", "JJ", "NNS", "VBN", "IN", "NNS", ",", "VBG", "NNP",
-                "NNP", "NNP", "NNP", "CC", "NNP", "NNP", "NNP", "NNP", ",", "MD", "RB",
-                "VB", "VBN", "JJ", "NNS", "."};
-        int[] arg1Pos = {8, 12};
-        int[] arg2Pos = {13, 17};
-        List<String> features = featureExtractor.getFeatures(0, tokens, posTags, null, null, arg1Pos, arg2Pos, "AQR Capital Management LLC", "Highbridge Capital Management LLC");
-
-        System.out.println(features);*/
-
-        /*
-        XMLParser parser = new XMLParser(kbpFile);
-        List<Query> queries = parser.getQueries();
-        parseQueryData(queries);
-
-        List<EntityWrapper> extractionData = QueryParser.prepareQueryForFeatureExtraction(queries.get(1));
-        EntityWrapper w = extractionData.get(0);
-        List<String> features = featureExtractor.getFeatures(w.sentenceId, w.tokens, w.posTags,
-                w.dependencyParents, w.dependencyTypes, w.entityPos, w.entity2Pos, w.entity, w.entity2);
-        System.out.println(features);
-*/
-        buildTestRelation();
-        readTestRelation();
 
     }
 
-    public static void buildTestRelation() throws IOException {
-        XMLParser parser = new XMLParser(kbpFile);
-        RelationECML featureExtractor = new RelationECML();
-
-        Query sampleQuery = parser.getQueryForQueryId("SF559");
-        List<EntityWrapper> extraction = QueryParser.prepareQueryForFeatureExtraction(sampleQuery);
-        EntityWrapper needle = null;
-
-        for (EntityWrapper e: extraction) {
-            if (e.sentenceId == 20025780) {
-                needle = e;
-            }
-        }
-
-        List<String> features = featureExtractor.getFeaturesForEntity(needle);
-        System.out.println(needle.sentence);
-        QueryRelation.Mention mb = QueryRelation.Mention.newBuilder().addAllFeature(features).setSourceId(-1).setDestId(-1).setSentence(needle.sentence).build();
-        QueryRelation.Relation finalRelation = QueryRelation.Relation.newBuilder().setDestGuid("/m/01j6t").setRelType("NA").setSourceGuid("/m/0vmt").addMention(mb).build();
-
-        BufferedOutputStream output = new BufferedOutputStream(new FileOutputStream("../Barry_Goldwater.pb"));
-        finalRelation.writeTo(output);
-    }
-
-    public static void readTestRelation() throws IOException {
-        InputStream is = new GZIPInputStream(new BufferedInputStream
-                (new FileInputStream("../Barry_Goldwater.pb")));
-
-        QueryRelation.Relation r = QueryRelation.Relation.parseDelimitedFrom(is);
-
-    }
 
 
     public static void prepareForFeatureExtraction(Query query) {
