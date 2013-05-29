@@ -8,17 +8,18 @@
 
 import java.io.*;
 import java.util.*;
+import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
 public class ProtobufBuilder {
 
-    public static List<String> buildProtobufsForTest(String dir, Query q)
+    public static String buildProtobufsForTest(String dataDir, String outDir, Query q)
             throws IOException {
 
         RelationECML featureExtractor = new RelationECML();
-        List<EntityWrapper> extraction = QueryParser.prepareQueryForFeatureExtraction(q);
-        List<String> outputFiles = new ArrayList<String>();
+        List<EntityWrapper> extraction = QueryParser.prepareQueryForFeatureExtraction(q, dataDir);
 
+        List<QueryRelation.Mention> mentions = new ArrayList<QueryRelation.Mention>();
         for (EntityWrapper ent: extraction) {
             System.out.println(ent);
 
@@ -27,33 +28,42 @@ public class ProtobufBuilder {
                     addAllFeature(features).
                     setDestId(-1).
                     setSourceId(-1).
-                    setFilename("").
+                    setFilename("NA").
                     setSentence(ent.sentence).
                     build();
 
-            QueryRelation.Relation finalRelation = QueryRelation.Relation.newBuilder().
-                    setDestGuid("").
-                    setRelType("").
-                    setSourceGuid("").
-                    addMention(mb).build();
-
-            String outputFile = dir + "/" + q.queryId +
-                    "_" + ent.entity +
-                    "_" + ent.entity2 + ".pb.gz";
-            BufferedOutputStream output = new BufferedOutputStream(
-                    new FileOutputStream(outputFile));
-            GZIPOutputStream out = new GZIPOutputStream(output);
-
-            try {
-                finalRelation.writeTo(out);
-                outputFiles.add(outputFile);
-            } catch (IOException e) {
-                e.printStackTrace();
-            } finally {
-                out.close();
-            }
+            mentions.add(mb);
         }
 
-        return outputFiles;
+        QueryRelation.Relation finalRelation = QueryRelation.Relation.newBuilder().
+                setDestGuid("/m/0vmt").
+                setRelType("NA").
+                setSourceGuid("/m/01j6t").
+                addAllMention(mentions).build();
+
+        String outputFile = outDir + "/" + q.queryId +
+                "_" + q.entity.replace(" ", "_") + ".pb.gz";
+        BufferedOutputStream output = new BufferedOutputStream(
+                new FileOutputStream(outputFile));
+        GZIPOutputStream out = new GZIPOutputStream(output);
+
+        try {
+            finalRelation.writeDelimitedTo(out);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            out.close();
+        }
+
+        return outputFile;
+    }
+
+    public static QueryRelation.Relation readProtobufFile(String file) throws IOException {
+        File protoFile = new File(file);
+        BufferedInputStream in = new BufferedInputStream(new FileInputStream(protoFile));
+        GZIPInputStream gin = new GZIPInputStream(in);
+        QueryRelation.Relation relation = QueryRelation.Relation.parseDelimitedFrom(gin);
+        gin.close();
+        return relation;
     }
 }

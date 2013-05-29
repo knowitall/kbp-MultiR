@@ -6,39 +6,43 @@
  * To change this template use File | Settings | File Templates.
  */
 
-import com.google.protobuf.CodedOutputStream;
-
 import java.io.*;
 import java.util.*;
-import java.util.zip.GZIPInputStream;
-import java.util.zip.GZIPOutputStream;
-
-
 
 public class KBPEvaluator {
-    public static final String kbpFile = "/home/bdwalker/multiR/2011_queries/data/queries.xml";
+    private static String dataLocation;
+    private static String processedOutputLocation;
 
     public static void main(String[] args) throws IOException {
-        Map<String, String> freeBaseToKBP = new HashMap<String, String>();
+        if (args.length < 3) {
+            System.out.println("Missing command line argument: location of kbp query file, pre-processed data file and output directory required");
+            System.out.println("Usage: /query/file /data/file/directory /data/output/directory");
+        } else {
 
-        RelationECML featureExtractor = new RelationECML();
+            String queryFile = args[0];
+            dataLocation = args[1];
+            processedOutputLocation = args[2];
 
+            // parse xml query file obtained from kbp
+            XMLParser parser = new XMLParser(queryFile);
 
+            List<Query> queries = parser.getQueries();
+
+            for (Query q: queries) {
+                if (q.entity.equals("Barry Goldwater"))
+                    slotFillSingleQuery(q, true);
+            }
+        }
     }
 
+    public static void slotFillSingleQuery(Query query, Boolean overwrite)
+            throws IOException {
+
+        QueryParser.outputDataForQuery(query, dataLocation, processedOutputLocation, overwrite);
+        String file = ProtobufBuilder.buildProtobufsForTest(processedOutputLocation, "..", query);
+        //ProcessBuilder pb = new ProcessBuilder("java", "-jar", query.queryId + "_" + query.entity.replace(" ", "_"), "-dir", "/home/bdwalker/multiR/results/");
+        //pb.start();
 
 
-    public static void prepareForFeatureExtraction(Query query) {
-
-    }
-
-    public static void parseQueryData(List<Query> queries)
-            throws FileNotFoundException {
-
-        /*for (Query q: queries) {
-            QueryParser.outputDataForQuery(q);
-        }*/
-
-        QueryParser.outputDataForQuery(queries.get(1));
     }
 }

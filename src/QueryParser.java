@@ -11,69 +11,70 @@ import java.util.*;
  * To change this template use File | Settings | File Templates.
  */
 public class QueryParser {
-    public static final String sentence_file = "/home/bdwalker/multiR/sentences.text";
-    public static final String pos_file = "/home/bdwalker/multiR/sentences.stanfordpos";
-    public static final String token_file = "/home/bdwalker/multiR/sentences.tokens";
-    public static final String ner_file = "/home/bdwalker/multiR/sentences.stanfordner";
-    public static final String deps_file = "/home/bdwalker/multiR/sentences.depsStanfordCCProcessed2";
-    public static final String ner_out = "/mnt/WebWare6/bdwalker/kbp/query_args/";
-    public static final String token_out_file = "/mnt/WebWare6/bdwalker/kbp/query_tokens/";
-    public static final String pos_out_file = "/mnt/WebWare6/bdwalker/kbp/query_postags/";
-    public static final String sentence_out = "/mnt/WebWare6/bdwalker/kbp/query_sentences/";
-    public static final String position_out_file = "/mnt/WebWare6/bdwalker/kbp/query_positions/";
-    public static final String deps_out_file = "/mnt/WebWare6/bdwalker/kbp/query_dependencies/";
-    public static final String sentence_out_file = "/mnt/WebWare6/bdwalker/kbp/query_sentences/";
+    public static final String sentence_file = "/sentences.text";
+    public static final String pos_file = "/sentences.stanfordpos";
+    public static final String token_file = "/sentences.tokens";
+    public static final String ner_file = "/sentences.stanfordner";
+    public static final String deps_file = "/sentences.depsStanfordCCProcessed2.nodup";
+    public static final String ner_out = "/query_args/";
+    public static final String token_out_file = "/query_tokens";
+    public static final String pos_out_file = "/query_postags";
+    public static final String sentence_out = "/query_sentences";
+    public static final String position_out_file = "/query_positions";
+    public static final String deps_out_file = "/query_dependencies";
+    public static final String sentence_out_file = "/query_sentences";
 
-    public static void outputDataForQuery(Query q) throws FileNotFoundException {
+    public static void outputDataForQuery(Query q, String fileLoc, String outputDir, Boolean overwrite) throws FileNotFoundException {
         String entity = q.entity;
-
-        Scanner tokenFile = new Scanner(new File(token_file));
-        Scanner posFile = new Scanner(new File(pos_file));
-        Scanner sentenceFile = new Scanner(new File(sentence_file));
-        Scanner nerFile = new Scanner(new File(ner_file));
-        Scanner depsFile = new Scanner(new File(deps_file));
-
         String file = "/" + q.queryId + "_" + q.entity.replace(" ", "_") + ".txt";
-        PrintStream tokenOut = new PrintStream(new File(token_out_file + file));
-        tokenOut.println(q.queryId + "\t" + q.entity);
-        PrintStream posOut = new PrintStream(new File(pos_out_file + file));
-        posOut.println(q.queryId + "\t" + q.entity);
-        PrintStream sentenceOut = new PrintStream(new File(sentence_out + file));
-        sentenceOut.println(q.queryId + "\t" + q.entity);
-        PrintStream nerOut = new PrintStream(new File(ner_out + file));
-        nerOut.println(q.queryId + "\t" + q.entity);
-        PrintStream positionOut = new PrintStream(new File(position_out_file + file));
-        positionOut.println(q.queryId + "\t" + q.entity);
-        PrintStream depsOut = new PrintStream(new File(deps_out_file + file));
-        depsOut.println(q.queryId + "\t" + q.entity);
+        File testFile = new File(outputDir + sentence_out + file);
 
+        if (overwrite || !testFile.exists()) {
+            Scanner tokenFile = new Scanner(new File(fileLoc + token_file));
+            Scanner posFile = new Scanner(new File(fileLoc + pos_file));
+            Scanner sentenceFile = new Scanner(new File(fileLoc + sentence_file));
+            Scanner nerFile = new Scanner(new File(fileLoc + ner_file));
+            Scanner depsFile = new Scanner(new File(fileLoc + deps_file));
 
+            PrintStream tokenOut = new PrintStream(new File(outputDir + token_out_file + file));
+            tokenOut.println(q.queryId + "\t" + q.entity);
+            PrintStream posOut = new PrintStream(new File(outputDir + pos_out_file + file));
+            posOut.println(q.queryId + "\t" + q.entity);
+            PrintStream sentenceOut = new PrintStream(new File(outputDir + sentence_out + file));
+            sentenceOut.println(q.queryId + "\t" + q.entity);
+            PrintStream nerOut = new PrintStream(new File(outputDir + ner_out + file));
+            nerOut.println(q.queryId + "\t" + q.entity);
+            PrintStream positionOut = new PrintStream(new File(outputDir + position_out_file + file));
+            positionOut.println(q.queryId + "\t" + q.entity);
+            PrintStream depsOut = new PrintStream(new File(outputDir + deps_out_file + file));
+            depsOut.println(q.queryId + "\t" + q.entity);
 
-        while (sentenceFile.hasNextLine()) {
+            while (sentenceFile.hasNextLine()) {
 
-            String tokens = tokenFile.nextLine();
-            String sentence = sentenceFile.nextLine();
-            String pos = posFile.nextLine();
-            String ner = nerFile.nextLine();
-            String deps = depsFile.nextLine();
-            String[] tabSep = sentence.split("\\t");
+                String tokens = tokenFile.nextLine();
+                String sentence = sentenceFile.nextLine();
+                String pos = posFile.nextLine();
+                String ner = nerFile.nextLine();
+                String deps = depsFile.nextLine();
+                String[] tabSep = sentence.split("\\t");
 
-            if (tabSep[1].contains(entity)) {
-                sentenceOut.println(sentence);
-                tokenOut.println(tokens);
-                posOut.println(pos);
-                nerOut.println(findArguments(ner, tokens));
-                positionOut.println(findPositions(ner));
-                depsOut.println(deps);
+                if (tabSep[1].contains(entity)) {
+                    sentenceOut.println(sentence);
+                    tokenOut.println(tokens);
+                    posOut.println(pos);
+                    nerOut.println(findArguments(ner, tokens));
+                    positionOut.println(findPositions(ner));
+                    depsOut.println(deps);
+                }
             }
-        }
 
-        tokenOut.close();
-        posOut.close();
-        sentenceOut.close();
-        nerOut.close();
-        positionOut.close();
-        depsOut.close();
+            tokenOut.close();
+            posOut.close();
+            sentenceOut.close();
+            nerOut.close();
+            positionOut.close();
+            depsOut.close();
+        }
     }
 
     public static String findPositions(String nerString) {
@@ -203,21 +204,21 @@ public class QueryParser {
     }
 
 
-    public static List<EntityWrapper> prepareQueryForFeatureExtraction(Query q) throws FileNotFoundException {
+    public static List<EntityWrapper> prepareQueryForFeatureExtraction(Query q, String dataLocation) throws FileNotFoundException {
         List<EntityWrapper> results = new ArrayList<EntityWrapper>();
 
-        String filename = q.queryId + "_" + q.entity.replace(" ", "_") + ".txt";
-        Scanner tokenIn = new Scanner(new File(token_out_file + filename));
+        String filename = "/" + q.queryId + "_" + q.entity.replace(" ", "_") + ".txt";
+        Scanner tokenIn = new Scanner(new File(dataLocation + token_out_file + filename));
         tokenIn.nextLine();
-        Scanner argsIn = new Scanner(new File(ner_out + filename));
+        Scanner argsIn = new Scanner(new File(dataLocation + ner_out + filename));
         argsIn.nextLine();
-        Scanner depsIn = new Scanner(new File(deps_out_file + filename));
+        Scanner depsIn = new Scanner(new File(dataLocation + deps_out_file + filename));
         depsIn.nextLine();
-        Scanner posIn = new Scanner(new File(pos_out_file + filename));
+        Scanner posIn = new Scanner(new File(dataLocation + pos_out_file + filename));
         posIn.nextLine();
-        Scanner positionIn = new Scanner(new File(position_out_file + filename));
+        Scanner positionIn = new Scanner(new File(dataLocation + position_out_file + filename));
         positionIn.nextLine();
-        Scanner sentenceIn = new Scanner(new File(sentence_out_file + filename));
+        Scanner sentenceIn = new Scanner(new File(dataLocation + sentence_out_file + filename));
         sentenceIn.nextLine();
 
 
