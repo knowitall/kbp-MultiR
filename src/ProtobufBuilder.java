@@ -13,46 +13,61 @@ import java.util.zip.GZIPOutputStream;
 
 public class ProtobufBuilder {
 
-    public static String buildProtobufsForTest(String dataDir, String outDir, Query q)
+    public static String buildProtobufsForTest(String dataDir, String outDir)
             throws IOException {
 
+        String outputFile = outDir + "/kbp_relations.pb.gz";
         RelationECML featureExtractor = new RelationECML();
-        List<EntityWrapper> extraction = QueryParser.prepareQueryForFeatureExtraction(q, dataDir);
+        Map<String, List<EntityWrapper>> arg1Dict = new HashMap<String, List<EntityWrapper>>();
+        List<EntityWrapper> extraction = QueryParserModified.prepareAllSentencesForFeatureExtraction(dataDir);
 
         List<QueryRelation.Mention> mentions = new ArrayList<QueryRelation.Mention>();
+
         for (EntityWrapper ent: extraction) {
-            System.out.println(ent);
-
-            List<String> features = featureExtractor.getFeaturesForEntity(ent);
-            QueryRelation.Mention mb = QueryRelation.Mention.newBuilder().
-                    addAllFeature(features).
-                    setDestId(-1).
-                    setSourceId(-1).
-                    setFilename("NA").
-                    setSentence(ent.sentence).
-                    build();
-
-            mentions.add(mb);
+            if (arg1Dict.containsKey(ent.entity)) {
+                arg1Dict.get(ent.entity).add(ent);
+            } else {
+                List<EntityWrapper> entList = new ArrayList<EntityWrapper>();
+                entList.add(ent);
+                arg1Dict.put(ent.entity, entList);
+            }
         }
 
-        QueryRelation.Relation finalRelation = QueryRelation.Relation.newBuilder().
-                setDestGuid("/m/0vmt").
-                setRelType("NA").
-                setSourceGuid("/m/01j6t").
-                addAllMention(mentions).build();
+        for (String entity: arg1Dict.keySet()) {
+            System.out.println(entity);
+            List<EntityWrapper> entList = arg1Dict.get(entity);
 
-        String outputFile = outDir + "/" + q.queryId +
-                "_" + q.entity.replace(" ", "_") + ".pb.gz";
-        BufferedOutputStream output = new BufferedOutputStream(
-                new FileOutputStream(outputFile));
-        GZIPOutputStream out = new GZIPOutputStream(output);
+            String wikiId = "";
+            for (EntityWrapper entWrapper: entList) {
+                wikiId = entWrapper.wikiEntity;
+                List<String> features = featureExtractor.getFeaturesForEntity(entWrapper);
+                QueryRelation.Mention mb = QueryRelation.Mention.newBuilder().
+                        addAllFeature(features).
+                        setDestId(entWrapper.sentenceId).
+                        setSourceId(entWrapper.sentenceId).
+                        setFilename(entWrapper.documentName).
+                        setSentence(entWrapper.sentence).
+                        build();
 
-        try {
-            finalRelation.writeDelimitedTo(out);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            out.close();
+                mentions.add(mb);
+            }
+            QueryRelation.Relation finalRelation = QueryRelation.Relation.newBuilder().
+                    setDestGuid(entity).
+                    setRelType("NA").
+                    setSourceGuid(wikiId).
+                    addAllMention(mentions).build();
+            System.out.println(finalRelation);
+            BufferedOutputStream output = new BufferedOutputStream(
+                    new FileOutputStream(outputFile));
+            GZIPOutputStream out = new GZIPOutputStream(output);
+
+            try {
+                finalRelation.writeDelimitedTo(out);
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                out.close();
+            }
         }
 
         return outputFile;

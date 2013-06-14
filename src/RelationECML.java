@@ -291,7 +291,7 @@ public class RelationECML {
 
     public List<String> getFeaturesForEntity(EntityWrapper e) {
         return getFeatures(e.sentenceId, e.tokens, e.posTags, e.dependencyParents,
-                e.dependencyTypes, e.entityPos, e.entity2Pos, e.entity, e.entity2);
+                e.dependencyTypes, e.entityPos, e.entity2Pos, e.entityNER, e.entity2NER);
     }
 
 

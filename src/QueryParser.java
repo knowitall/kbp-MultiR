@@ -16,9 +16,10 @@ public class QueryParser {
     public static final String token_file = "/sentences.tokens";
     public static final String ner_file = "/sentences.stanfordner";
     public static final String deps_file = "/sentences.depsStanfordCCProcessed2.nodup";
-    public static final String ner_out = "/query_args/";
+    public static final String args_out = "/query_args";
     public static final String token_out_file = "/query_tokens";
     public static final String pos_out_file = "/query_postags";
+    public static final String ner_out_file = "/query_ner";
     public static final String sentence_out = "/query_sentences";
     public static final String position_out_file = "/query_positions";
     public static final String deps_out_file = "/query_dependencies";
@@ -42,12 +43,14 @@ public class QueryParser {
             posOut.println(q.queryId + "\t" + q.entity);
             PrintStream sentenceOut = new PrintStream(new File(outputDir + sentence_out + file));
             sentenceOut.println(q.queryId + "\t" + q.entity);
-            PrintStream nerOut = new PrintStream(new File(outputDir + ner_out + file));
-            nerOut.println(q.queryId + "\t" + q.entity);
+            PrintStream argOut = new PrintStream(new File(outputDir + args_out + file));
+            argOut.println(q.queryId + "\t" + q.entity);
             PrintStream positionOut = new PrintStream(new File(outputDir + position_out_file + file));
             positionOut.println(q.queryId + "\t" + q.entity);
             PrintStream depsOut = new PrintStream(new File(outputDir + deps_out_file + file));
             depsOut.println(q.queryId + "\t" + q.entity);
+            PrintStream nerOut = new PrintStream(new File(outputDir + ner_out_file + file));
+            nerOut.println(q.queryId + "\t" + q.entity);
 
             while (sentenceFile.hasNextLine()) {
 
@@ -62,16 +65,18 @@ public class QueryParser {
                     sentenceOut.println(sentence);
                     tokenOut.println(tokens);
                     posOut.println(pos);
-                    nerOut.println(findArguments(ner, tokens));
+                    nerOut.println(ner);
+                    argOut.println(findArguments(ner, tokens));
                     positionOut.println(findPositions(ner));
                     depsOut.println(deps);
                 }
             }
 
+            nerOut.close();
             tokenOut.close();
             posOut.close();
             sentenceOut.close();
-            nerOut.close();
+            argOut.close();
             positionOut.close();
             depsOut.close();
         }
@@ -191,6 +196,21 @@ public class QueryParser {
         return offsetEntity;
     }
 
+    private static String findEntityNER(String entity, String[] nerString, String[] tokens) {
+        String[] entTokens = entity.split(" ");
+        int entIndex = 0;
+        for (int i = 0; i < tokens.length; i++) {
+            if (entTokens[entIndex].contains(tokens[i]) && entIndex == (entTokens.length - 1)) {
+                return nerString[i];
+            } else if (entTokens[entIndex].contains(tokens[i])) {
+                ++entIndex;
+            } else if (!entTokens[entIndex].contains(tokens[i]) && entIndex > 0) {
+                entIndex = 0;
+            }
+        }
+        return null;
+    }
+
     private static String findEntityPosition(String entity, String[] args, String[] position) {
         String entityPosition = "";
         for (int i = 0; i < args.length; i++) {
@@ -210,7 +230,7 @@ public class QueryParser {
         String filename = "/" + q.queryId + "_" + q.entity.replace(" ", "_") + ".txt";
         Scanner tokenIn = new Scanner(new File(dataLocation + token_out_file + filename));
         tokenIn.nextLine();
-        Scanner argsIn = new Scanner(new File(dataLocation + ner_out + filename));
+        Scanner argsIn = new Scanner(new File(dataLocation + args_out + filename));
         argsIn.nextLine();
         Scanner depsIn = new Scanner(new File(dataLocation + deps_out_file + filename));
         depsIn.nextLine();
@@ -220,6 +240,8 @@ public class QueryParser {
         positionIn.nextLine();
         Scanner sentenceIn = new Scanner(new File(dataLocation + sentence_out_file + filename));
         sentenceIn.nextLine();
+        Scanner nerIn = new Scanner(new File(dataLocation + ner_out_file + filename));
+        nerIn.nextLine();
 
 
         while (tokenIn.hasNextLine()) {
@@ -235,6 +257,7 @@ public class QueryParser {
 
             String[] pos = posIn.nextLine().split("\\t")[1].split(" ");
 
+            String[] nerString = nerIn.nextLine().split(" ");
 
             String[] positionsArray = positionIn.nextLine().split("\\t");
             String[] positions = Arrays.copyOfRange(positionsArray, 1, positionsArray.length);
@@ -251,7 +274,7 @@ public class QueryParser {
 
 
             for (String arg2Pos: secondArguments.keySet()) {
-                EntityWrapper wrapper = new EntityWrapper(q.entity);
+                EntityWrapper wrapper = new EntityWrapper();
                 wrapper.dependencyParents = p;
                 wrapper.dependencyTypes = t;
                 wrapper.entityPos = positionArray;
@@ -260,6 +283,8 @@ public class QueryParser {
                 wrapper.sentence = sentence;
                 wrapper.sentenceId = Integer.parseInt(tabTokens[0]);
                 wrapper.entity2 = secondArguments.get(arg2Pos);
+                wrapper.entityNER = findEntityNER(wrapper.entity, nerString, tokens);
+                wrapper.entity2NER = findEntityNER(wrapper.entity2, nerString, tokens);
                 String[] entity2Position = arg2Pos.split(":");
                 int entity2Start = Integer.parseInt(entity2Position[0]);
                 int entity2End = Integer.parseInt(entity2Position[1]);

@@ -9,27 +9,34 @@ import java.util.Arrays;
  */
 public class EntityWrapper {
     public String entity;
+    public String entity2;
     public String[] tokens;
     public int sentenceId;
     public String[] posTags;
-    public String entity2;
     public int[] entityPos;
     public int[] entity2Pos;
     public int[] dependencyParents;
     public String[] dependencyTypes;
+    public String entityNER;
+    public String entity2NER;
     public String sentence;
+    public String wikiEntity;
+    public String freebaseEntity;
+    public String documentName;
 
-    public EntityWrapper(String e) {
-        entity = e;
+    public EntityWrapper() {
+        freebaseEntity = "NIL";
+        wikiEntity = "NIL";
         tokens = new String[0];
         sentenceId = -1;
         posTags = new String[0];
-        entity2 = "NULL";
         entityPos = new int[0];
         entity2Pos = new int[0];
         dependencyParents = new int[0];
         sentence = "";
         dependencyTypes = new String[0];
+        entity2NER = "";
+        entityNER = "";
     }
 
     public int hashCode() {
@@ -37,16 +44,17 @@ public class EntityWrapper {
     }
 
     public String toString() {
-        return "Entity             : " + entity + "\n" +
-               "Sentence ID        : " + sentenceId + "\n" +
+        return "Sentence ID        : " + sentenceId + "\n" +
                "Sentence           :" + sentence + "\n" +
                "POS Tags           : " +  Arrays.toString(posTags) + "\n" +
                "Tokens             : " + Arrays.toString(tokens) + "\n" +
-               "Entity2            : " + entity2 + "\n" +
                "Dependency Types   : " + Arrays.toString(dependencyTypes) + "\n" +
                "Dependency Parents : " + Arrays.toString(dependencyParents) + "\n" +
+               "Entity             : " + entity + "\n" +
                "Entity Pos         : " + Arrays.toString(entityPos) + "\n" +
-               "Entity2 Pos        : " + Arrays.toString(entity2Pos) + "\n\n";
+               "Entity2 Pos        : " + entity2 + "\n" +
+               "Entity2 Pos        : " + Arrays.toString(entity2Pos) + "\n" +
+               "Document Name      : " + documentName + "\n\n";
     }
 
 }
