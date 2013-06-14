@@ -23,6 +23,7 @@ public class EntityWrapper {
     public String wikiEntity;
     public String freebaseEntity;
     public String documentName;
+    public int entityKey;
 
     public EntityWrapper() {
         freebaseEntity = "NIL";

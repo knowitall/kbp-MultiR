@@ -25,20 +25,21 @@ public class Sentence{
     public Sentence(String sentence, String ner, String pos,
                     String tokens, String deps, String wiki,
                     String meta) {
+
         this.ner = ner.split("\\t")[1].split(" ");
         this.tokens = tokens.split("\\t")[1].split(" ");
-        file = meta.split("\\t")[2];
         String[] sentenceChunks = sentence.split("\\t");
         this.sentence = sentenceChunks[1];
         this.sentenceID = Integer.parseInt(sentenceChunks[0]);
-        posString = pos;
         posTokens = pos.split("\\t")[1].split(" ");
-        System.out.println(sentence);
-        System.out.println(pos);
+        posString = pos;
+        file = meta.split("\\t")[2];
+
         String[] depsSplit = deps.split("\\t");
         if (depsSplit.length > 1) {
             parseDependencies(depsSplit[1]);
         }
+
         String[] wikiSplit = wiki.split("\\t");
         wikiData = Arrays.copyOfRange(wikiSplit, 1, wikiSplit.length);
 
@@ -46,6 +47,7 @@ public class Sentence{
     }
 
     private void parseDependencies(String depString) {
+        System.out.println(depString);
         dependencyParents = new int[tokens.length + 1];
         dependencyTypes = new String[tokens.length + 1];
         for (int i = 0; i < dependencyParents.length; ++i) {
@@ -59,12 +61,8 @@ public class Sentence{
             int third = Integer.parseInt(depTokens[2]);
             String type = depTokens[1];
             int gov = first, d = third;
-            if (dependencyParents[d] != -1 || dependencyParents[d] != gov-1) {
-                dependencyParents[d] = -1;
-            } else {
-                dependencyParents[d] = gov-1;
-                dependencyTypes[d] = type;
-            }
+            dependencyParents[d - 1] = gov-1;
+            dependencyTypes[d - 1] = type;
         }
     }
 
@@ -79,20 +77,7 @@ public class Sentence{
         return entity;
     }
 
-
-    private void findArguments() {
-        List<String> firstArguments = new ArrayList<String>();
-        List<String> secondArguments = new ArrayList<String>();
-        List<String> firstArgumentsPosition = new ArrayList<String>();
-        List<String> secondArgumentsPosition = new ArrayList<String>();
-        List<String> entityList = new ArrayList<String>();
-        List<String> entityList2 = new ArrayList<String>();
-        Set<String> startingIndices = new HashSet<String>();
-        wikiId = new ArrayList<String>();
-
-        String arg = "";
-        String offset = "";
-
+    private void findArgumentsFromWikiData(Set<String> startingIndices) {
         //look at wikification data for possible arguments
         for (String wiki: wikiData) {
             String[] wikiSplit = wiki.split(" ");
@@ -105,16 +90,33 @@ public class Sentence{
 
                 String entity = getEntityForOffset(wikiOffset);
                 if (nerTag.equals("O") || nerTag.equals("ORGANIZATION") || nerTag.equals("PERSON")) {
-                    firstArguments.add(nerTag);
+                    arg1.add(nerTag);
                     wikiId.add(wikiSplit[2]);
-                    firstArgumentsPosition.add(wikiOffset);
-                    entityList.add(entity);
+                    position1.add(wikiOffset);
+                    entities.add(entity);
                 }
-                secondArguments.add(nerTag);
-                secondArgumentsPosition.add(wikiOffset);
-                entityList2.add(entity);
+                arg2.add(nerTag);
+                position2.add(wikiOffset);
+                entities2.add(entity);
             }
         }
+    }
+
+    private void addEntity(String arg, String offset, String entity) {
+        if (arg.equals("PERSON") || arg.equals("ORGANIZATION")){
+            arg1.add(arg);
+            position1.add(offset);
+            wikiId.add("NIL");
+            entities.add(entity);
+        }
+        arg2.add(arg);
+        entities2.add(entity);
+        position2.add(offset);
+    }
+
+    private void findArgumentsFromNerData(Set<String> startingIndices) {
+        String arg = "";
+        String offset = "";
 
         // look for additional in NER data
         arg = "";
@@ -133,15 +135,7 @@ public class Sentence{
                 offset += ":" + i;
                 if (!startingIndices.contains("" + offset.charAt(0))) {
                     String entity = getEntityForOffset(offset);
-                    if (current.equals("PERSON") || current.equals("ORGANIZATION")){
-                        firstArguments.add(arg);
-                        firstArgumentsPosition.add(offset);
-                        wikiId.add("NIL");
-                        entityList.add(entity);
-                    }
-                    secondArguments.add(arg);
-                    entityList2.add(entity);
-                    secondArgumentsPosition.add(offset);
+                    addEntity(arg, offset, entity);
                 }
                 arg = "";
                 offset = "";
@@ -154,15 +148,7 @@ public class Sentence{
                 offset += ":" + i;
                 if (!startingIndices.contains("" + offset.charAt(0))) {
                     String entity = getEntityForOffset(offset);
-                    if (current.equals("PERSON") || current.equals("ORGANIZATION")){
-                        wikiId.add("NIL");
-                        firstArguments.add(arg);
-                        entityList.add(entity);
-                        firstArgumentsPosition.add(offset);
-                    }
-                    secondArguments.add(arg);
-                    entityList2.add(offset);
-                    secondArgumentsPosition.add(offset);
+                    addEntity(arg, offset, entity);
                 }
                 offset = i + "";
                 arg = current;
@@ -172,18 +158,12 @@ public class Sentence{
         if (started) {
             offset += ":" + i;
             String entity = getEntityForOffset(offset);
-            if (arg.equals("PERSON") || arg.equals("ORGANIZATION")){
-                firstArguments.add(arg);
-                entityList.add(entity);
-                wikiId.add("NIL");
-                firstArgumentsPosition.add(offset);
-            }
-            secondArguments.add(arg);
-            entityList2.add(entity);
-            secondArgumentsPosition.add(offset);
+            addEntity(arg, offset, entity);
         }
+    }
 
-//        //Use a regex as one last attempt to find additional arguments
+    private void findArgumentsFromRegex(Set<String> startingIndices) {
+        //Use a regex as one last attempt to find additional arguments
 //        Pattern pattern = Pattern.compile("DT? (NOD?|JJ|N)*N");
 //        Matcher matcher = pattern.matcher(posString);
 //        while (matcher.find()) {
@@ -200,19 +180,23 @@ public class Sentence{
 //                secondArguments.add("O");
 //            }
 //        }
+    }
 
-        arg1 = firstArguments;
-        arg2 = secondArguments;
-        position1 = firstArgumentsPosition;
-        position2 = secondArgumentsPosition;
-        entities = entityList;
-        entities2 = entityList2;
-        System.out.println(arg1);
-        System.out.println(position1);
-        System.out.println(arg2);
-        System.out.println(position2);
-        System.out.println(entities);
-        System.out.println(entities2);
+    private void findArguments() {
+        arg1 = new ArrayList<String>();
+        arg2 = new ArrayList<String>();
+        position1 = new ArrayList<String>();
+        position2 = new ArrayList<String>();
+        entities = new ArrayList<String>();
+        entities2 = new ArrayList<String>();
+        Set<String> startingIndices = new HashSet<String>();
+        wikiId = new ArrayList<String>();
+
+
+        findArgumentsFromWikiData(startingIndices);
+        findArgumentsFromNerData(startingIndices);
+        findArgumentsFromRegex(startingIndices);
+
     }
 
     private int getTokenInteger(int startChar) {
@@ -238,6 +222,7 @@ public class Sentence{
 
     public List<EntityWrapper> getSentenceEntities() {
         List<EntityWrapper> ents = new ArrayList<EntityWrapper>();
+        int count = 0;
         for (int i = 0; i < arg1.size(); i++) {
             for (int j = 0; j < arg2.size(); j++) {
                 if (!entities.get(i).equals(entities2.get(j))) {
@@ -254,6 +239,7 @@ public class Sentence{
                     e.entity2 = entities2.get(j);
                     e.wikiEntity = wikiId.get(i);
                     e.documentName = file;
+                    e.entityKey = count;
 
                     String[] offset = position1.get(i).split(":");
                     int[] integerOffset = new int[2];
@@ -268,6 +254,7 @@ public class Sentence{
                     e.entity2Pos = integerOffset2;
 
                     ents.add(e);
+                    count++;
                 }
             }
         }

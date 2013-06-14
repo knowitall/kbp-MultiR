@@ -10,12 +10,12 @@ import java.util.*;
  * Time: 3:52 PM
  * To change this template use File | Settings | File Templates.
  */
-public class QueryParserModified {
+public class SentenceParser {
     public static final String sentence_file = "/sentences.text";
     public static final String pos_file = "/sentences.stanfordpos";
     public static final String token_file = "/sentences.tokens";
     public static final String ner_file = "/sentences.stanfordner";
-    public static final String deps_file = "/sentences.depsStanfordCCProcessed";
+    public static final String deps_file = "/sentences.depsStanfordCCProcessed.nodup";
     public static final String wiki_file = "/sentences.wikification";
     public static final String meta_file = "/sentences.meta";
     public static List<EntityWrapper> prepareAllSentencesForFeatureExtraction(String fileLoc) throws FileNotFoundException {
@@ -30,6 +30,7 @@ public class QueryParserModified {
         Scanner metaFile = new Scanner(new File(fileLoc + meta_file));
         List<Sentence> sentences = new ArrayList<Sentence>();
 
+        int count = 0;
         while (sentenceIn.hasNextLine()) {
             String sentence = sentenceIn.nextLine();
             String ner = nerFile.nextLine();
@@ -38,10 +39,12 @@ public class QueryParserModified {
             String deps = depsFile.nextLine();
             String wiki = wikiFile.nextLine();
             String meta = metaFile.nextLine();
-            if (sentence.startsWith("1257509\t")) {
+            if (sentence.startsWith("0") || sentence.startsWith("14715\t")) {
                 sentences.add(new Sentence(sentence, ner, pos, tokens, deps, wiki, meta));
-                break;
+                count += 1;
             }
+
+            if (count == 2) break;
 
         }
 

@@ -1,5 +1,7 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.HashSet;
 
 public class RelationECML {
 
@@ -19,9 +21,6 @@ public class RelationECML {
 
 		List<String> features = new ArrayList<String>();
 
-		/** ner feature, such as LOCATION->PERSON */
-		features.add(arg1ner + "->" + arg2ner);
-
 		// it's easier to deal with first, second
 		int[] first = arg1Pos, second = arg2Pos;
 		String firstNer = arg1ner, secondNer = arg2ner;
@@ -36,23 +35,16 @@ public class RelationECML {
 		
 		// define the middle parts
 		StringBuilder middleTokens = new StringBuilder();
-		StringBuilder middleTags = new StringBuilder();
 		for (int i=first[1]; i < second[0]; i++) {
 			if (i > first[1]) {
 				middleTokens.append(" ");
-				middleTags.append(" ");
 			}
 			middleTokens.append(tokens[i]);
-			middleTags.append(postags[i]);
 		}
 		
 		if (second[0] - first[1] > 10) {
 			middleTokens.setLength(0);
 			middleTokens.append("*LONG*");
-			
-			// newly added
-			middleTags.setLength(0);
-			middleTags.append("*LONG*");
 		}
 		
 		// define the prefixes and suffixes
@@ -82,16 +74,10 @@ public class RelationECML {
 		
 		// generate the features in the same order as in ecml data
 		String mto = middleTokens.toString();
-		String mta = middleTags.toString();
 		
 		features.add(inv + "|" + firstNer + "|" + mto + "|" + secondNer);
 		features.add(inv + "|" + prefixes[1] + "|" + firstNer + "|" + mto + "|" + secondNer + "|" + suffixes[1]);
 		features.add(inv + "|" + prefixes[2] + "|" + firstNer + "|" + mto + "|" + secondNer + "|" + suffixes[2]);
-
-		features.add(inv + "|" + firstNer + "|" + mta + "|" + secondNer);
-		features.add(inv + "|" + prefixes[1] + "|" + firstNer + "|" + mta + "|" + secondNer + "|" + suffixes[1]);
-		features.add(inv + "|" + prefixes[2] + "|" + firstNer + "|" + mta + "|" + secondNer + "|" + suffixes[2]);
-
 		
 		// dependency features
 		if (depParents == null || depParents.length < tokens.length) return features;
@@ -99,11 +85,27 @@ public class RelationECML {
 		// identify head words of arg1 and arg2
 		// (start at end, while inside entity, jump)
 		int head1 = arg1Pos[1]-1;
-		while (depParents[head1] >= arg1Pos[0] && depParents[head1] < arg1Pos[1]) head1 = depParents[head1];
+		{
+			Set<Integer> nodesSeen = new HashSet<Integer>();
+			while (depParents[head1] >= arg1Pos[0] && depParents[head1] < arg1Pos[1]) { 
+				nodesSeen.add(head1);
+				head1 = depParents[head1];
+				if (nodesSeen.contains(head1))
+					return null;
+			}
+		}
 		int head2 = arg2Pos[1]-1;
 		//System.out.println(head1 + " " + head2);
-		while (depParents[head2] >= arg2Pos[0] && depParents[head2] < arg2Pos[1]) head2 = depParents[head2];
-		
+		{
+			Set<Integer> nodesSeen = new HashSet<Integer>();
+			while (depParents[head2] >= arg2Pos[0] && depParents[head2] < arg2Pos[1]) { 
+				nodesSeen.add(head2);
+				head2 = depParents[head2];
+				if (nodesSeen.contains(head2))
+					return null;
+			}
+		}
+
 		
 		// find path of dependencies from first to second
 		int[] path1 = new int[tokens.length];
@@ -293,6 +295,5 @@ public class RelationECML {
         return getFeatures(e.sentenceId, e.tokens, e.posTags, e.dependencyParents,
                 e.dependencyTypes, e.entityPos, e.entity2Pos, e.entityNER, e.entity2NER);
     }
-
 
 }
