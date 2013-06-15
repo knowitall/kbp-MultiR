@@ -47,7 +47,6 @@ public class Sentence{
     }
 
     private void parseDependencies(String depString) {
-        System.out.println(depString);
         dependencyParents = new int[tokens.length + 1];
         dependencyTypes = new String[tokens.length + 1];
         for (int i = 0; i < dependencyParents.length; ++i) {

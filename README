@@ -1,0 +1,62 @@
+
+****** 
+Dependencies:
+
+protobuf-java-2.5.0.jar
+multir.jar
+commons-io-2.4.jar
+
+All of these should be located in the /lib directory of the multir-kbp root. 
+
+******
+System Requirements:
+
+The evaluator will run on any system with the above dependencies. However, the system must have a substantial amount of system memory, preferably 16Gb+.  MultiR will not run unless the heap size is increased to accommodate the large training file.  The evaluator will do this automatically but will crash with a heap space error if the system cannot fit it into memory.  
+
+******
+Running the System:
+
+The system was designed to be largely hands off.  It will automatically parse all the files needed to obtain the feature extractions, produce the protobut output, pass the produced protobuf and the model to multir, produce the multir results and then output the kbp query file that can be loaded into a database.  To start the process the following command should be given.
+
+java KBPEvaluator processed_file_loc trained_model_file output_protobuf_dir output_model_dir
+
+
+processed_file_loc: The location where the pre-processed knowledge base files are located. This should be the directory and not an individual file.  For example, the value I passed while testing was /home/bdwalker/multiR/processed_data.  In this directory I had the files Xiao produced for the fall capstone.  In order for features to be extracted properly the following files must be present:
+
+sentences.text
+sentences.stanfordpos
+sentences.tokens
+sentences.standfordner
+sentences.depsStanfordCCProcessed.nodup
+sentences.wikification
+sentences.meta
+
+trained_model_file:  This is the location of the trained kbp model.  This is the protobuf file produced by Mitchell with the KBP corpus. This should be the file and not the directory. For example, when training my argument was /home/bdwalker/multiR/kbp_model/relations-entitypairs.pb.gz
+
+output_protobuf_dir:  This is the directory where you would like to have the protobuf file containing the testing relations to be saved. The program will later read it in from the same directory.
+
+output_model_dir: This is the directory where you would like to save the processed training/testing files that multiR will produce.  MultiR's first step is to process the protobuf files.  It will place the processed files in this directory and will then read them back in during testing. 
+
+******
+
+Processing Pipeline:
+
+When the evaluator is called with the command above the following steps take place to produce the final output:
+
+1) The KBPEvaluator.java class first calls SentenceParser.  SentenceParser.java will traverse every line in the 7 files listed above.  For each sentence in those files it will create a new Sentence object.  The sentence object takes a line from each of the files above that correspond to a single sentence. It then finds all argument pairs in that sentence.  All of this is stored in the Sentence object. Each Sentence object as a method called getSentenceEntities that returns a list of all the argument pairs for that sentence. Each entity pair is stored in a wrapper class called EntityWrapper.  Each list of EntityWrappers for each sentence is then passed on to ProtobufBuilder. 
+
+2)  Once ProtobufBuilder receives the EntityWrapers it will build the protobuf file that will be passed to multiR.  It does this for each EntityWrapper that contains the processed information for each sentence in the corpus.  The ProtobufBuilder will pass each EntityWrapper to the RelationECML class and will receive the features extractor for that sentence.  Those features are then put into a kbpRelation.Relation object.  The Relation object is a Protobuffer class.  Each Relation contains a mention, which is the data from an individual sentence.  The Relation stores the arg1 and arg2 pairs so that they can be retrieved after multiR completes.  To match up the EntityWrapper after multiR runs the EntityWrapper data is written to a file in the same order as each Relation.  This is done because the EntityWrapper contains information needed for the KBP competition that won't be passed through the multiR output.  The key allows them to be matched back up when parsing the multiR results. 
+
+3) After ProtobufBuilder completes creating the protobuf file to be passed to multiR the KBPEvaluator calls the multiR.jar file in a separate process. It will automatically go through the entire process until the results file is produced.  This may take a good deal of time and there is no indication of how far along the process is with the exception of a println that tells when each major phase is complete. (Preprocess, Train, Test) If it crashes the error will be printed to the console.
+
+4) When multiR has completed the KBPEvaluator will call the ResultParser class.  The ResultParser will take the results from multiR and match them back up with each Relation's EntityWrapper.  It will then output all the information needed by KBP to a file. The file will contain the following information:
+
+sentenceID arg1 arg2 relation confidence sentence documentName wikipediaEntity
+
+Same of these may be NA depending on the results.  There will be an entry for every sentence passed to multiR. The values in the file will be tab separated. 
+
+
+
+
+
+

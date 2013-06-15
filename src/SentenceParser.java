@@ -1,5 +1,6 @@
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.PrintStream;
 import java.util.*;
 
@@ -18,7 +19,7 @@ public class SentenceParser {
     public static final String deps_file = "/sentences.depsStanfordCCProcessed.nodup";
     public static final String wiki_file = "/sentences.wikification";
     public static final String meta_file = "/sentences.meta";
-    public static List<EntityWrapper> prepareAllSentencesForFeatureExtraction(String fileLoc) throws FileNotFoundException {
+    public static void prepareAllSentencesForFeatureExtraction(String fileLoc, String output) throws IOException {
         List<EntityWrapper> results = new ArrayList<EntityWrapper>();
 
         Scanner tokenIn = new Scanner(new File(fileLoc + token_file));
@@ -28,9 +29,7 @@ public class SentenceParser {
         Scanner depsFile = new Scanner(new File(fileLoc + deps_file));
         Scanner wikiFile = new Scanner(new File(fileLoc + wiki_file));
         Scanner metaFile = new Scanner(new File(fileLoc + meta_file));
-        List<Sentence> sentences = new ArrayList<Sentence>();
 
-        int count = 0;
         while (sentenceIn.hasNextLine()) {
             String sentence = sentenceIn.nextLine();
             String ner = nerFile.nextLine();
@@ -39,19 +38,8 @@ public class SentenceParser {
             String deps = depsFile.nextLine();
             String wiki = wikiFile.nextLine();
             String meta = metaFile.nextLine();
-            if (sentence.startsWith("0") || sentence.startsWith("14715\t")) {
-                sentences.add(new Sentence(sentence, ner, pos, tokens, deps, wiki, meta));
-                count += 1;
-            }
-
-            if (count == 2) break;
-
+            Sentence s =  new Sentence(sentence, ner, pos, tokens, deps, wiki, meta);
+            ProtobufBuilder.buildProtobufsForTest(s.getSentenceEntities(), output);
         }
-
-        for (Sentence s: sentences) {
-            results.addAll(s.getSentenceEntities());
-        }
-
-        return results;
     }
 }

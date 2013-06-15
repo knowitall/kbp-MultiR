@@ -29,9 +29,10 @@ public class KBPEvaluator {
             protobufDir = args[2];
             processedModelDirectory = args[3];
             //process corpus and output testing protobuf file
-            List<EntityWrapper> extraction = ProtobufBuilder.buildProtobufsForTest(dataLocation, protobufDir);
-            runMultiR();
-            ResultParser.processMultirResults(extraction, processedModelDirectory);
+            SentenceParser.prepareAllSentencesForFeatureExtraction(dataLocation, protobufDir);
+            //runMultiR();
+            //ResultParser.processMultirResults(processedModelDirectory);
+            //ProtoReader.readProtobufer("/home/bdwalker/multiR/kbp_model/training-entitypairs.pb.gz");
 
         }
     }

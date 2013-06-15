@@ -13,13 +13,14 @@ import java.util.zip.GZIPOutputStream;
 
 public class ProtobufBuilder {
     public static final String PROTOBUF_OUT = "/kbp_relations.pb.gz";
+    public static final String ENTITY_OUT = "/entity_output.txt";
 
-    public static List<EntityWrapper> buildProtobufsForTest(String dataDir, String protobufDir)
+    public static List<EntityWrapper> buildProtobufsForTest(List<EntityWrapper> extraction, String protobufDir)
             throws IOException {
 
         RelationECML featureExtractor = new RelationECML();
         Map<String, List<EntityWrapper>> arg1Dict = new HashMap<String, List<EntityWrapper>>();
-        List<EntityWrapper> extraction = SentenceParser.prepareAllSentencesForFeatureExtraction(dataDir);
+        /*List<EntityWrapper> extraction = SentenceParser.prepareAllSentencesForFeatureExtraction(dataDir);*/
 
 
         for (EntityWrapper ent: extraction) {
@@ -32,20 +33,15 @@ public class ProtobufBuilder {
             }
         }
 
-        BufferedOutputStream output = new BufferedOutputStream(
-                new FileOutputStream(protobufDir + PROTOBUF_OUT));
-        GZIPOutputStream out = new GZIPOutputStream(output);
+        for (String entity: arg1Dict.keySet()) {
+            List<EntityWrapper> entList = arg1Dict.get(entity);
 
-        try {
-            for (String entity: arg1Dict.keySet()) {
-                List<EntityWrapper> entList = arg1Dict.get(entity);
-
-                for (EntityWrapper entWrapper: entList) {
-                    List<KbpRelation.Mention> mentions = new ArrayList<KbpRelation.Mention>();
-                    List<String> features = featureExtractor.getFeaturesForEntity(entWrapper);
-                    //feature extractor will return null in the event of a dependency graph loop
-                    if (features == null) continue;
-
+            for (EntityWrapper entWrapper: entList) {
+                List<KbpRelation.Mention> mentions = new ArrayList<KbpRelation.Mention>();
+                List<String> features = featureExtractor.getFeaturesForEntity(entWrapper);
+                //feature extractor will return null in the event of a dependency graph loop
+                if (features == null) continue;
+                if (entity.equals("John Densmore")) {
                     KbpRelation.Mention mb = KbpRelation.Mention.newBuilder().
                             addAllFeature(features).
                             setDestId(entWrapper.entityKey).
@@ -59,28 +55,40 @@ public class ProtobufBuilder {
                     KbpRelation.Relation finalRelation = KbpRelation.Relation.newBuilder().
                             setDestGuid(entWrapper.entity2).
                             setRelType("NA").
-                            setSourceGuid(entity + "|" + entWrapper.entityKey).
+                            setSourceGuid(entity).
                             addAllMention(mentions).build();
                     System.out.println(finalRelation);
-
-                    finalRelation.writeDelimitedTo(out);
+                    BufferedOutputStream output = new BufferedOutputStream(
+                            new FileOutputStream(protobufDir + PROTOBUF_OUT, true));
+                    GZIPOutputStream out = new GZIPOutputStream(output);
+                    PrintStream entityOut = new PrintStream(new FileOutputStream(protobufDir + ENTITY_OUT, true));
+                    try {
+                        System.out.println(entity);
+                        entityOut.println(entWrapper.sentenceId + "\t" + entWrapper.documentName + "\t" + entWrapper.sentence + "\t" + entWrapper.wikiEntity);
+                        finalRelation.writeDelimitedTo(out);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } finally {
+                        entityOut.close();
+                        out.close();
+                    }
                 }
             }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            out.close();
         }
 
         return extraction;
     }
 
-    public static KbpRelation.Relation readProtobufFile(String file) throws IOException {
+    public static List<KbpRelation.Relation> readProtobufFile(String file) throws IOException {
+        List<KbpRelation.Relation> relations = new ArrayList<KbpRelation.Relation>();
         File protoFile = new File(file);
         BufferedInputStream in = new BufferedInputStream(new FileInputStream(protoFile));
         GZIPInputStream gin = new GZIPInputStream(in);
-        KbpRelation.Relation relation = KbpRelation.Relation.parseDelimitedFrom(gin);
+        KbpRelation.Relation relation;
+        while ((relation = KbpRelation.Relation.parseDelimitedFrom(gin)) != null) {
+            relations.add(relation);
+        }
         gin.close();
-        return relation;
+        return relations;
     }
 }

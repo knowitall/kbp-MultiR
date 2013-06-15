@@ -13,15 +13,14 @@ import java.util.*;
 public class ResultParser {
 
     public static void processMultirResults(List<EntityWrapper> extractions, String resultsDirectory) throws FileNotFoundException {
-        Map<Integer, EntityWrapper> extractionDict = new HashMap<Integer, EntityWrapper>();
-        for (EntityWrapper ent: extractions) {
-            extractionDict.put(ent.entityKey, ent);
-        }
 
         PrintStream output = new PrintStream(new File(resultsDirectory + "/kbp_results"));
         Scanner results = new Scanner(new File(resultsDirectory + "/results"));
+        Scanner entities = new Scanner(new File(resultsDirectory + "/entity_output"));
         results.nextLine();
         while (results.hasNextLine()) {
+            String entityLine = entities.nextLine();
+            String[] entitySplit = entityLine.split("\\t");
             String line = results.nextLine();
             String[] components = line.split("\\t");
             String[] arg1Comps = components[0].split("|");
@@ -29,14 +28,12 @@ public class ResultParser {
             String relation = components[3];
             String confidence = components[4];
             String arg1 = arg1Comps[0];
-            int key = Integer.parseInt(arg1Comps[1]);
-            EntityWrapper entity = extractionDict.get(key);
-            String doc = entity.documentName;
-            String sentence = entity.sentence;
-            int sentenceId = entity.sentenceId;
-            String wikiEntity = entity.wikiEntity;
-            output.println(arg1 + "\t" + arg2 + "\t" + relation + "\t" + confidence +
-                    "\t" + sentence + "\t" + sentenceId + "\t" + doc + "\t" + wikiEntity);
+            String doc = entitySplit[1];
+            String sentence = entitySplit[2];
+            int sentenceId = Integer.parseInt(entitySplit[0]);
+            String wikiEntity = entitySplit[3];
+            output.println(sentenceId + "\t" + arg1 + "\t" + arg2 + "\t" + relation + "\t" + confidence +
+                    "\t" + sentence + "\t" + doc + "\t" + wikiEntity);
 
         }
         output.close();
