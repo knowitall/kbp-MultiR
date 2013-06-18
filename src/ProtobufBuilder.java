@@ -12,16 +12,14 @@ import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
 public class ProtobufBuilder {
-    public static final String PROTOBUF_OUT = "/kbp_relations.pb.gz";
-    public static final String ENTITY_OUT = "/entity_output.txt";
-
-    public static List<EntityWrapper> buildProtobufsForTest(List<EntityWrapper> extraction, String protobufDir)
+    public static List<EntityWrapper> buildProtobufsForTest(List<EntityWrapper> extraction,
+                                                            String protobufDir, String protobufFile,
+                                                            String entityFile)
             throws IOException {
 
         RelationECML featureExtractor = new RelationECML();
         Map<String, List<EntityWrapper>> arg1Dict = new HashMap<String, List<EntityWrapper>>();
-        /*List<EntityWrapper> extraction = SentenceParser.prepareAllSentencesForFeatureExtraction(dataDir);*/
-
+        /*List<EntityWrapper> extraction = SentenceParser.processCorpus(dataDir);*/
 
         for (EntityWrapper ent: extraction) {
             if (arg1Dict.containsKey(ent.entity)) {
@@ -41,37 +39,34 @@ public class ProtobufBuilder {
                 List<String> features = featureExtractor.getFeaturesForEntity(entWrapper);
                 //feature extractor will return null in the event of a dependency graph loop
                 if (features == null) continue;
-                if (entity.equals("John Densmore")) {
-                    KbpRelation.Mention mb = KbpRelation.Mention.newBuilder().
-                            addAllFeature(features).
-                            setDestId(entWrapper.entityKey).
-                            setSourceId(entWrapper.sentenceId).
-                            setFilename(entWrapper.documentName).
-                            setSentence(entWrapper.sentence).
-                            build();
+                KbpRelation.Mention mb = KbpRelation.Mention.newBuilder().
+                        addAllFeature(features).
+                        setDestId(entWrapper.entityKey).
+                        setSourceId(entWrapper.sentenceId).
+                        setFilename(entWrapper.documentName).
+                        setSentence(entWrapper.sentence).
+                        build();
 
-                    mentions.add(mb);
+                mentions.add(mb);
 
-                    KbpRelation.Relation finalRelation = KbpRelation.Relation.newBuilder().
-                            setDestGuid(entWrapper.entity2).
-                            setRelType("NA").
-                            setSourceGuid(entity).
-                            addAllMention(mentions).build();
-                    System.out.println(finalRelation);
-                    BufferedOutputStream output = new BufferedOutputStream(
-                            new FileOutputStream(protobufDir + PROTOBUF_OUT, true));
-                    GZIPOutputStream out = new GZIPOutputStream(output);
-                    PrintStream entityOut = new PrintStream(new FileOutputStream(protobufDir + ENTITY_OUT, true));
-                    try {
-                        System.out.println(entity);
-                        entityOut.println(entWrapper.sentenceId + "\t" + entWrapper.documentName + "\t" + entWrapper.sentence + "\t" + entWrapper.wikiEntity);
-                        finalRelation.writeDelimitedTo(out);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    } finally {
-                        entityOut.close();
-                        out.close();
-                    }
+                KbpRelation.Relation finalRelation = KbpRelation.Relation.newBuilder().
+                        setDestGuid(entWrapper.entity2).
+                        setRelType("NA").
+                        setSourceGuid(entity).
+                        addAllMention(mentions).build();
+                BufferedOutputStream output = new BufferedOutputStream(
+                        new FileOutputStream(protobufDir + protobufFile, true));
+                GZIPOutputStream out = new GZIPOutputStream(output);
+                PrintStream entityOut = new PrintStream(new FileOutputStream(protobufDir + entityFile, true));
+                try {
+                    entityOut.println(entWrapper.sentenceId + "\t" + entWrapper.documentName + "\t"
+                            + entWrapper.sentence + "\t" + entWrapper.wikiEntity);
+                    finalRelation.writeDelimitedTo(out);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } finally {
+                    entityOut.close();
+                    out.close();
                 }
             }
         }

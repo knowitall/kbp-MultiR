@@ -4,6 +4,8 @@ import java.util.*;
 import java.util.regex.*;
 
 public class Sentence{
+    public static final String PERSON_ARG = "PERSON";
+    public static final String ORG_ARG = "ORGANIZATION";
     public int sentenceID;
     private List<String> arg1;
     private List<String> arg2;
@@ -41,9 +43,28 @@ public class Sentence{
         }
 
         String[] wikiSplit = wiki.split("\\t");
-        wikiData = Arrays.copyOfRange(wikiSplit, 1, wikiSplit.length);
+        if (wikiSplit.length > 1) {
+            wikiData = Arrays.copyOfRange(wikiSplit, 1, wikiSplit.length);
+        }
 
         findArguments();
+    }
+
+    private void findArguments() {
+        arg1 = new ArrayList<String>();
+        arg2 = new ArrayList<String>();
+        position1 = new ArrayList<String>();
+        position2 = new ArrayList<String>();
+        entities = new ArrayList<String>();
+        entities2 = new ArrayList<String>();
+        Set<String> startingIndices = new HashSet<String>();
+        wikiId = new ArrayList<String>();
+
+        if (wikiData != null) {
+            findArgumentsFromWikiData(startingIndices);
+        }
+        findArgumentsFromNerData(startingIndices);
+        findArgumentsFromRegex(startingIndices);
     }
 
     private void parseDependencies(String depString) {
@@ -88,7 +109,7 @@ public class Sentence{
                 String nerTag = ner[Integer.parseInt(wikiSplit[0])];
 
                 String entity = getEntityForOffset(wikiOffset);
-                if (nerTag.equals("O") || nerTag.equals("ORGANIZATION") || nerTag.equals("PERSON")) {
+                if (nerTag.equals("O") || nerTag.equals(ORG_ARG) || nerTag.equals(PERSON_ARG)) {
                     arg1.add(nerTag);
                     wikiId.add(wikiSplit[2]);
                     position1.add(wikiOffset);
@@ -102,7 +123,7 @@ public class Sentence{
     }
 
     private void addEntity(String arg, String offset, String entity) {
-        if (arg.equals("PERSON") || arg.equals("ORGANIZATION")){
+        if (arg.equals(PERSON_ARG) || arg.equals(ORG_ARG)){
             arg1.add(arg);
             position1.add(offset);
             wikiId.add("NIL");
@@ -114,8 +135,8 @@ public class Sentence{
     }
 
     private void findArgumentsFromNerData(Set<String> startingIndices) {
-        String arg = "";
-        String offset = "";
+        String arg;
+        String offset;
 
         // look for additional in NER data
         arg = "";
@@ -181,23 +202,6 @@ public class Sentence{
 //        }
     }
 
-    private void findArguments() {
-        arg1 = new ArrayList<String>();
-        arg2 = new ArrayList<String>();
-        position1 = new ArrayList<String>();
-        position2 = new ArrayList<String>();
-        entities = new ArrayList<String>();
-        entities2 = new ArrayList<String>();
-        Set<String> startingIndices = new HashSet<String>();
-        wikiId = new ArrayList<String>();
-
-
-        findArgumentsFromWikiData(startingIndices);
-        findArgumentsFromNerData(startingIndices);
-        findArgumentsFromRegex(startingIndices);
-
-    }
-
     private int getTokenInteger(int startChar) {
         int currentChar = 0;
         String[] posSplit = posString.split("\\t");
@@ -236,9 +240,11 @@ public class Sentence{
                     e.sentenceId = sentenceID;
                     e.entity = entities.get(i);
                     e.entity2 = entities2.get(j);
-                    e.wikiEntity = wikiId.get(i);
                     e.documentName = file;
                     e.entityKey = count;
+                    if (wikiId.size() >= i) {
+                        e.wikiEntity = wikiId.get(i);
+                    }
 
                     String[] offset = position1.get(i).split(":");
                     int[] integerOffset = new int[2];
